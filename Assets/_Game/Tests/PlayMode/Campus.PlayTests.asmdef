@@ -1,0 +1,1 @@
+{"name":"Campus.PlayTests","references":["Campus.Runtime","Campus.Simulation","Unity.Cinemachine","Unity.ugui"],"optionalUnityReferences":["TestAssemblies"]}

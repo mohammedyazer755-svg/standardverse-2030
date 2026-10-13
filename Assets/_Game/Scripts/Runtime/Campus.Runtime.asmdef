@@ -1,0 +1,1 @@
+{"name":"Campus.Runtime","rootNamespace":"CampusPulse","references":["Campus.Simulation","Unity.InputSystem","Unity.Cinemachine","Unity.ugui","Unity.RenderPipelines.Universal.Runtime","Unity.RenderPipelines.Core.Runtime"]}

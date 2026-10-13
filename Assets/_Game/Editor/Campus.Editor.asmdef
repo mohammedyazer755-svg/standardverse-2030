@@ -1,0 +1,1 @@
+{"name":"Campus.Editor","references":["Campus.Runtime","Campus.Simulation","Unity.Cinemachine","Unity.RenderPipelines.Universal.Runtime","Unity.RenderPipelines.Core.Runtime","UnityEditor.TestRunner","UnityEngine.TestRunner"],"includePlatforms":["Editor"]}
