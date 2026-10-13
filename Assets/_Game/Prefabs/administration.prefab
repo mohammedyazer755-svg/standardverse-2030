@@ -579,6 +579,7 @@ MonoBehaviour:
   FocusDistance: 65
   Highlight: {fileID: 6244407245975740294}
   ActivityIndicator: {fileID: 5522837421187123753}
+  LeakIndicator: {fileID: 0}
   WaterSurface: {fileID: 0}
 --- !u!65 &2750582544971431696
 BoxCollider:

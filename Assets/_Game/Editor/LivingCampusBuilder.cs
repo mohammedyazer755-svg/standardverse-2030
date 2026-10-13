@@ -288,16 +288,53 @@ namespace CampusPulse.Editor
         }
         static void Utilities()
         {
-            var water=Utility("water","Water & Pump House","Two storage tanks and electrically driven pumping.",new Vector3(-66,0,-71),29,20);
+            var water=Utility("water","Water & Pump House","Elevated industrial reservoir towers and electrically driven pumping.",new Vector3(-66,0,-71),29,20);
             var waterMat=Material("Reservoir water",new Color(.05f,.43f,.55f),.45f,.92f);
+            var valveMat=Material("Valve red",new Color(.85f,.14f,.12f),.3f,.5f);
             for(int i=-1;i<=1;i+=2)
             {
-                var tank=new GameObject("Tank "+i,typeof(MeshFilter),typeof(MeshRenderer)); tank.transform.SetParent(water.transform,false); tank.transform.localPosition=new Vector3(i*7,0,2);
-                tank.GetComponent<MeshFilter>().sharedMesh=TankMesh(); tank.GetComponent<Renderer>().sharedMaterial=trim;
+                // Concrete piers and 4 steel truss stanchion legs
+                for(int x=-1;x<=1;x+=2) for(int z=-1;z<=1;z+=2)
+                {
+                    LocalBox(water.transform,"Pier",new Vector3(i*7+x*2.7f,.25f,2+z*2.7f),new Vector3(.9f,.5f,.9f),trim);
+                    LocalBox(water.transform,"Tower leg",new Vector3(i*7+x*2.7f,3f,2+z*2.7f),new Vector3(.24f,5.6f,.24f),metal);
+                }
+                // Structural X-braces
+                LocalBox(water.transform,"Cross brace front",new Vector3(i*7,3f,2-2.7f),new Vector3(5.2f,.12f,.12f),metal);
+                LocalBox(water.transform,"Cross brace back",new Vector3(i*7,3f,2+2.7f),new Vector3(5.2f,.12f,.12f),metal);
+
+                // Elevated catwalk platform with safety railing at height 5.8m
+                LocalBox(water.transform,"Catwalk platform",new Vector3(i*7,5.8f,2),new Vector3(7.6f,.18f,7.6f),metal);
+                for(int side=-1;side<=1;side+=2)
+                {
+                    LocalBox(water.transform,"Railing X",new Vector3(i*7,6.4f,2+side*3.7f),new Vector3(7.6f,.9f,.08f),metal);
+                    LocalBox(water.transform,"Railing Z",new Vector3(i*7+side*3.7f,6.4f,2),new Vector3(.08f,.9f,7.6f),metal);
+                }
+
+                // Elevated tank body sitting atop the catwalk
+                var tank=new GameObject("Tank "+i,typeof(MeshFilter),typeof(MeshRenderer));
+                tank.transform.SetParent(water.transform,false);
+                tank.transform.localPosition=new Vector3(i*7,5.9f,2);
+                tank.GetComponent<MeshFilter>().sharedMesh=TankMesh();
+                tank.GetComponent<Renderer>().sharedMaterial=trim;
+
+                // Conical steel roof cap and structural rib rings
+                Shape(PrimitiveType.Cylinder,"Tank roof",water.transform,new Vector3(i*7,11.5f,2),new Vector3(7.8f,.35f,7.8f),metal);
+                for(int r=1;r<=3;r++) Shape(PrimitiveType.Cylinder,"Tank rib",water.transform,new Vector3(i*7,5.9f+r*1.35f,2),new Vector3(7.85f,.1f,7.85f),metal);
+
+                // Water surface inside the tank
                 var surface=Shape(PrimitiveType.Cylinder,"Stored water",tank.transform,new Vector3(0,3.3f,0),new Vector3(7.3f,.06f,7.3f),waterMat);
                 if(i<0) water.WaterSurface=surface.transform;
-                LocalBox(water.transform,"Tank gauge",new Vector3(i*7,2.8f,-2.1f),new Vector3(.35f,4.7f,.16f),aqua);
-                for(int rung=0;rung<8;rung++) LocalBox(water.transform,"Service ladder",new Vector3(i*7+3.8f,.5f+rung*.65f,2),new Vector3(.6f,.08f,.13f),metal);
+
+                // Main Riser Pipe descending to ground
+                LocalBox(water.transform,"Main riser pipe",new Vector3(i*7,2.9f,2),new Vector3(.5f,5.8f,.5f),aqua);
+                // Shutoff valve handwheel at eye level
+                var wheel=Shape(PrimitiveType.Cylinder,"Valve handwheel",water.transform,new Vector3(i*7,1.3f,1.55f),new Vector3(.55f,.08f,.55f),valveMat);
+                wheel.transform.localRotation=Quaternion.Euler(90,0,0);
+
+                // Service ladder
+                for(int rung=0;rung<16;rung++) LocalBox(water.transform,"Service ladder",new Vector3(i*7+3.85f,.4f+rung*.36f,2),new Vector3(.65f,.08f,.12f),metal);
+                LocalBox(water.transform,"Tank gauge",new Vector3(i*7,8.6f,-2.1f),new Vector3(.35f,4.7f,.16f),aqua);
             }
             LocalBox(water.transform,"Pump house",new Vector3(0,1.5f,-6.4f),new Vector3(7,3,4),stone);
             LocalBox(water.transform,"Pump roof",new Vector3(0,3.2f,-6.4f),new Vector3(7.5f,.3f,4.5f),metal);
@@ -305,6 +342,11 @@ namespace CampusPulse.Editor
             var rotor=Shape(PrimitiveType.Cylinder,"Pump status rotor",water.transform,new Vector3(0,1.7f,-8.5f),new Vector3(1.1f,.1f,1.1f),aqua);
             rotor.transform.localRotation=Quaternion.Euler(90,0,0); rotors.Add(rotor.transform);
             LocalBox(rotor.transform,"Rotor needle",Vector3.zero,new Vector3(.13f,.3f,.9f),white);
+
+            // Active leak puddle on the ground
+            var leak=LocalBox(water.transform,"Active pipe leak",new Vector3(0,.05f,-3.6f),new Vector3(4.8f,.04f,3.8f),waterMat);
+            water.LeakIndicator=leak.GetComponent<Renderer>();
+
             var power=Utility("power","Campus Substation","Grid distribution, building services and limited backup supply.",new Vector3(-24,0,-71),27,20);
             for(int i=-1;i<=1;i+=2)
             {
@@ -375,13 +417,53 @@ namespace CampusPulse.Editor
             var parking=Utility("parking","Mobility Court","Parking, service access and a pedestrian corridor.",new Vector3(67,0,-30),42,23);
             parking.Capacity=100; parking.InitialOccupants=15;
             LocalBox(parking.transform,"Parking asphalt",new Vector3(0,.2f,0),new Vector3(41,.1f,22),road);
+            var carPaints=new[]{
+                Material("Car slate",new Color(.16f,.28f,.42f),.5f,.7f),
+                Material("Car burgundy",new Color(.46f,.10f,.14f),.5f,.7f),
+                Material("Car pearl",new Color(.88f,.89f,.86f),.2f,.8f),
+                Material("Car forest",new Color(.11f,.26f,.15f),.4f,.65f),
+                Material("Car charcoal",new Color(.15f,.17f,.19f),.6f,.75f),
+                Material("Car amber",new Color(.65f,.43f,.12f),.5f,.7f)
+            };
             for(int i=0;i<12;i++)
             {
                 float x=-18+i*3.3f;
                 LocalBox(parking.transform,"Bay line",new Vector3(x,.27f,5),new Vector3(.1f,.03f,8),white);
                 if(i%3==0) continue;
-                LocalBox(parking.transform,"Parked car body",new Vector3(x+1.5f,.8f,5),new Vector3(1.7f,1,3.4f),i%2==0?trim:metal);
-                LocalBox(parking.transform,"Parked car glass",new Vector3(x+1.5f,1.4f,5.2f),new Vector3(1.45f,.7f,1.8f),glass);
+                Car(parking.transform,new Vector3(x+1.5f,.2f,5),0,carPaints[i%carPaints.Length]);
+            }
+        }
+        static void Car(Transform parent,Vector3 p,float yaw,Material paint)
+        {
+            var car=new GameObject("Parked car").transform; car.SetParent(parent,false);
+            car.localPosition=p; car.localRotation=Quaternion.Euler(0,yaw,0);
+            // Lower chassis & aerodynamic hood
+            LocalBox(car,"Chassis",new Vector3(0,.35f,0),new Vector3(1.75f,.35f,3.9f),paint);
+            LocalBox(car,"Hood slope",new Vector3(0,.42f,1.35f),new Vector3(1.68f,.25f,1.1f),paint);
+            // Cabin superstructure
+            LocalBox(car,"Cabin",new Vector3(0,.88f,-.25f),new Vector3(1.48f,.55f,2.1f),paint);
+            // Windshield, rear window, side glass
+            LocalBox(car,"Windshield",new Vector3(0,.88f,.85f),new Vector3(1.38f,.46f,.12f),glass);
+            LocalBox(car,"Rear glass",new Vector3(0,.88f,-1.32f),new Vector3(1.36f,.44f,.12f),glass);
+            LocalBox(car,"Side glass",new Vector3(0,.88f,-.25f),new Vector3(1.52f,.42f,1.7f),glass);
+            // Bumpers & grille
+            LocalBox(car,"Front bumper",new Vector3(0,.25f,1.98f),new Vector3(1.72f,.24f,.18f),metal);
+            LocalBox(car,"Rear bumper",new Vector3(0,.25f,-1.98f),new Vector3(1.72f,.24f,.18f),metal);
+            LocalBox(car,"Grille",new Vector3(0,.38f,1.98f),new Vector3(1.1f,.18f,.06f),metal);
+            // Headlights (warm white glow) & taillights (red emissive)
+            var lampGlow=Material("Headlight glow",new Color(1f,.96f,.85f));
+            LocalBox(car,"Headlight L",new Vector3(-.62f,.38f,1.99f),new Vector3(.3f,.15f,.06f),lampGlow);
+            LocalBox(car,"Headlight R",new Vector3(.62f,.38f,1.99f),new Vector3(.3f,.15f,.06f),lampGlow);
+            var tailGlow=Material("Taillight glow",new Color(.92f,.12f,.08f));
+            LocalBox(car,"Taillight L",new Vector3(-.62f,.4f,-1.99f),new Vector3(.3f,.14f,.06f),tailGlow);
+            LocalBox(car,"Taillight R",new Vector3(.62f,.4f,-1.99f),new Vector3(.3f,.14f,.06f),tailGlow);
+            // 4 Distinct rubber wheels with silver rims
+            for(int x=-1;x<=1;x+=2) for(int z=-1;z<=1;z+=2)
+            {
+                var wheel=Shape(PrimitiveType.Cylinder,"Tire",car,new Vector3(x*.88f,.28f,z*1.18f),new Vector3(.58f,.16f,.58f),road);
+                wheel.transform.localRotation=Quaternion.Euler(0,0,90);
+                var hub=Shape(PrimitiveType.Cylinder,"Rim",car,new Vector3(x*.91f,.28f,z*1.18f),new Vector3(.36f,.18f,.36f),trim);
+                hub.transform.localRotation=Quaternion.Euler(0,0,90);
             }
         }
         static GameObject LocalBox(Transform parent,string name,Vector3 p,Vector3 size,Material material)

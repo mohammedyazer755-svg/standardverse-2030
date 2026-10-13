@@ -68,4 +68,32 @@ public sealed class SceneTests
         Assert.Greater(life.SolarTables.Length,0); Assert.Greater(life.Rotors.Length,0); Assert.NotNull(life.Vehicle);
         LogAssert.NoUnexpectedReceived();
     }
+
+    [UnityTest] public IEnumerator PlayableResourceInterventionsAndStateSync()
+    {
+        yield return SceneManager.LoadSceneAsync("Campus"); yield return null;
+        var session = Object.FindFirstObjectByType<CampusSession>();
+        Assert.NotNull(session);
+        session.Begin();
+        Assert.IsTrue(session.State.MainLeakActive);
+
+        // Submit Repair Main Leak action
+        bool ok = session.State.TrySubmitAction(CampusPulse.Simulation.ActionKind.RepairLeak, "water", out var ticket, out string reason);
+        Assert.IsTrue(ok, reason);
+        Assert.AreEqual(CampusPulse.Simulation.ActionStatus.Accepted, ticket.Status);
+
+        // Advance 5 simulation ticks
+        for (int i = 0; i < 5; i++) session.State.Tick();
+        Assert.AreEqual(CampusPulse.Simulation.ActionStatus.Completed, ticket.Status);
+        Assert.IsFalse(session.State.MainLeakActive, "Leak must be resolved");
+
+        // Submit LED Retrofit
+        bool okLed = session.State.TrySubmitAction(CampusPulse.Simulation.ActionKind.LEDs, "academic", out var ledTicket, out _);
+        Assert.IsTrue(okLed);
+        for (int i = 0; i < 7; i++) session.State.Tick();
+        Assert.IsTrue(session.State.LedInstalledAll);
+
+        yield return null;
+        LogAssert.NoUnexpectedReceived();
+    }
 }

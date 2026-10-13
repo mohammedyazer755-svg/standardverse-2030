@@ -83,7 +83,10 @@ namespace CampusPulse
                 w.LeftArm.localRotation=Quaternion.Euler(-swing*.7f,0,0); w.RightArm.localRotation=Quaternion.Euler(swing*.7f,0,0);
             }
             for(int i=0;i<Trees.Length;i++) Trees[i].localRotation=treeRotations[i]*Quaternion.Euler(Mathf.Sin(visualTime*.8f+i)*.65f,0,Mathf.Cos(visualTime*.6f+i)*.5f);
-            foreach(var rotor in Rotors) rotor.Rotate(0,0,dt*65,Space.Self);
+            if (Session.State.PumpDeliveredLpm > 0f)
+            {
+                foreach(var rotor in Rotors) rotor.Rotate(0,0,dt*85,Space.Self);
+            }
             if(SolarTables!=null) foreach(var table in SolarTables)
                 table.localRotation=Quaternion.Euler(-22+Mathf.Sin(Session.State.Minute/1440f*Mathf.PI*2)*7,0,0);
             if(Vehicle && VehicleRoute.Length>1)

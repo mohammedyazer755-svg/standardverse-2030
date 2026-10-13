@@ -15,6 +15,7 @@ namespace CampusPulse
         public float FocusDistance = 46;
         public Renderer Highlight;
         public Renderer ActivityIndicator;
+        public Renderer LeakIndicator;
         public Transform WaterSurface;
         public FacilityState CreateState() => new FacilityState(Id, DisplayName, Purpose, Capacity, InitialOccupants, Water, Power, Waste);
         MaterialPropertyBlock properties;
@@ -30,18 +31,24 @@ namespace CampusPulse
         }
         public void Present(CampusState state)
         {
-            if(ActivityIndicator)
+            if (ActivityIndicator)
             {
                 properties ??= new MaterialPropertyBlock();
-                var color=state.PowerSupplyKW>0?new Color(.1f,.8f,.65f):new Color(.9f,.15f,.08f);
-                properties.SetColor("_BaseColor",color); properties.SetColor("_EmissionColor",color);
+                bool blackout = state.PowerDeficitKW > 5f;
+                var color = blackout ? new Color(.92f, .18f, .12f) : new Color(.12f, .88f, .72f);
+                properties.SetColor("_BaseColor", color);
+                properties.SetColor("_EmissionColor", color * (blackout ? 1.2f : 2.0f));
                 ActivityIndicator.SetPropertyBlock(properties);
             }
             if (WaterSurface)
             {
                 var p = WaterSurface.localPosition;
-                p.y = .4f + 4f * state.WaterStoredLiters / state.WaterCapacityLiters;
+                p.y = 1.0f + 4.8f * (state.WaterStoredLiters / state.WaterCapacityLiters);
                 WaterSurface.localPosition = p;
+            }
+            if (LeakIndicator)
+            {
+                LeakIndicator.gameObject.SetActive(state.MainLeakActive);
             }
         }
     }
