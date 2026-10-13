@@ -31,7 +31,7 @@ namespace CampusPulse.Editor
                 switch (command)
                 {
                     case "foundation": CampusBuilder.Foundation(); break;
-                    case "refresh": AssetDatabase.Refresh(); break;
+                    case "refresh": AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate); UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation(); break;
                     case "benchmark": LivingCampusBuilder.Benchmark(); break;
                     case "campus": LivingCampusBuilder.FullCampus(); break;
                     case "build": CampusBuilder.Build(); break;

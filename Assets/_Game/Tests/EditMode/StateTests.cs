@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using UnityEngine;
+using CampusPulse;
 using CampusPulse.Simulation;
 
 public sealed class StateTests
@@ -383,5 +385,67 @@ public sealed class StateTests
         var advicePower = new AdvisorAdvice(AdvisorPriority.Critical, ResourceCategory.Energy, "Grid Deficit", "Overload", "Backup", ActionKind.Backup, BisCatalog.ElectricalStandards);
         Assert.AreEqual(AdvisorPriority.Critical, advicePower.Priority);
         Assert.IsTrue(advicePower.BisReference.StandardCode.Contains("IS 732"));
+    }
+
+    [Test]
+    public void QrCodeGenerator_GeneratesValidMatrixAndTexture()
+    {
+        string url = "http://192.168.84.60:8090/?token=tok_test1234&pin=1234";
+        bool[,] matrix = QrCodeGenerator.GenerateMatrix(url);
+        Assert.IsNotNull(matrix);
+        int size = matrix.GetLength(0);
+        Assert.AreEqual(size, matrix.GetLength(1));
+        Assert.GreaterOrEqual(size, 21);
+
+        // Top-left finder pattern corner must be true (black)
+        Assert.IsTrue(matrix[0, 0]);
+        Assert.IsTrue(matrix[0, 6]);
+        Assert.IsTrue(matrix[6, 0]);
+
+        // Generate texture and verify
+        Texture2D tex = QrCodeGenerator.GenerateTexture(url, scale: 4, quietZone: 2);
+        Assert.IsNotNull(tex);
+        Assert.AreEqual((size + 4) * 4, tex.width);
+        Assert.AreEqual((size + 4) * 4, tex.height);
+        Assert.IsTrue(tex.isReadable);
+    }
+
+    [Test]
+    public void MobileCameraCommand_BlendsAndClampsProperly()
+    {
+        var desktopCmd = new CameraCommand { Pan = new Vector2(0.8f, 0.6f), Orbit = 0.5f, Zoom = 1f };
+        var mobileCmd = new CameraCommand { Pan = new Vector2(0.5f, -0.2f), Orbit = -0.2f, Zoom = -0.5f };
+
+        var combined = new CameraCommand
+        {
+            Pan = Vector2.ClampMagnitude(desktopCmd.Pan + mobileCmd.Pan, 1f),
+            Orbit = desktopCmd.Orbit + mobileCmd.Orbit,
+            Zoom = desktopCmd.Zoom + mobileCmd.Zoom,
+            Reset = desktopCmd.Reset || mobileCmd.Reset
+        };
+
+        Assert.LessOrEqual(combined.Pan.magnitude, 1.0001f);
+        Assert.AreEqual(0.3f, combined.Orbit, 0.001f);
+        Assert.AreEqual(0.5f, combined.Zoom, 0.001f);
+    }
+
+    [Test]
+    public void MobileActionDispatch_ValidatesAndConsumesBudget()
+    {
+        var s = CreateSampleCampus();
+        int initialBudget = s.BudgetINR;
+        int initialStaff = s.StaffAvailable;
+
+        // Dispatch LED retrofit
+        bool accepted = s.TrySubmitAction(ActionKind.LEDs, "academic", out var ticket, out string reason);
+        Assert.IsTrue(accepted, reason);
+        Assert.IsNotNull(ticket);
+        Assert.AreEqual(initialBudget - ActionCatalog.Get(ActionKind.LEDs).Cost, s.BudgetINR);
+        Assert.AreEqual(initialStaff - 2, s.StaffAvailable);
+
+        // Duplicate submission should be rejected
+        bool dupAccepted = s.TrySubmitAction(ActionKind.LEDs, "academic", out _, out string dupReason);
+        Assert.IsFalse(dupAccepted);
+        Assert.IsTrue(dupReason.Contains("already"));
     }
 }

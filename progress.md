@@ -1,70 +1,77 @@
 # CAMPUS PULSE 2030 — PROGRESS
 
-Last updated: 2026-10-13 12:41 PM (Asia/Calcutta)
+Last updated: 2026-10-13 01:10 PM (Asia/Calcutta)
 Repo / Unity root: C:/GameDev/CampusPulse2030
 Editor: 6000.3.26f1; Windows standalone and WebGL support installed.
-Current phase: 3 — Campus Crisis Campaign
-Status: COMPLETE — Phase 3 fully implemented, tested, built, and verified with standalone smoke run. STOP after Phase 3 per instructions.
+Current phase: 4 — Mobile QR Controller
+Status: COMPLETE — Phase 4 fully implemented, tested, built, and verified. STOP after Phase 4 per instructions. (Physical phone hardware test marked unverified pending physical device).
 
 ## Implemented and verified
 - Foundation: 4 EditMode tests, original PlayMode test, Windows build and visible smoke. Source 3485028; release foundation-v0.1.0.
 - Phase 1 COMPLETE: 13 facility IDs, original procedural campus, strategic camera, selection/focus/highlight, HUD, 121 state-derived student visuals, vehicle, wind, solar tables, pump rotor and lamps.
-- Phase 2 COMPLETE:
-  - Authoritative deterministic simulation in `CampusPulse.Simulation` (`CampusState.cs`, `Decisions.cs`): Water (50 kL, leak, pumping), Electricity (solar curve, peak lab shift, shedding, diesel backup), Waste (segregation, overflow, collection routes), Crowds (conserved population, canteen rush, garden diversion).
-  - Grounded RDR2-level visuals: elevated industrial water towers with stanchions/catwalks, modeled 3D vehicles in parking, digital twin pins, ACES tonemapping.
-- Phase 3 COMPLETE:
-  - 3-Chapter Playable Campaign (`CampaignModel.cs`, `CampusSession.cs`):
-    - Chapter 1 ("The Normal Day"): Discovery gameplay, 4 introductory objectives, early pipe leak incident at min 2.
-    - Chapter 2 ("The Pressure Builds"): National Tech Symposium crowd surge, Heatwave peak power demand, multi-stress balancing.
-    - Chapter 3 ("The Campus Crisis"): Cascading emergency (Water Main Burst -> Emergency High-Head Pumping -> Substation Grid Overload cascade).
-    - Multi-Criteria Scoring & 4 Distinct Endings: `SustainableChampion`, `BalancedManager`, `CostlyRecovery`, `CampusCrisis` calibrated against budget solvency, student satisfaction, overflow, and carbon/green balance.
-  - Chain-Reaction Crisis Engine:
-    - Data-driven `CrisisIncident` with trigger minutes, severity, leak/power/waste/arrival multipliers, early resolution hooks, and live simulation formula coupling.
-  - Campus Pulse Advisor & BIS Catalog (`AdvisorModel.cs`):
-    - Priority-based deterministic diagnostic engine suggesting one-click interventions.
-    - Verified Indian Standards educational cards: IS 1172:1993 (water per capita), IS 732:2019 (electrical safety & metering), Solid Waste Management Rules 2016 (segregation & 100% daily collection), and NBC 2016 Part 4 (fire safety, egress & occupancy limits).
-  - Save / Load / Chapter Replay:
-    - JSON persistence to `campus-save.json`, on-screen quick replay jump buttons (`CH 1`, `CH 2`, `CH 3`, `SAVE`, `LOAD`).
-  - Interactive Campaign HUD (`CampusHud.cs`):
-    - Top chapter objective checklist, active crisis ticker, advisor card with "Apply Advice" and "View BIS Standard" modal, chapter completion modal, and campaign summary ending report.
+- Phase 2 COMPLETE: Authoritative deterministic simulation in `CampusPulse.Simulation`, elevated industrial water towers, 3D modeled vehicles, ACES lighting.
+- Phase 3 COMPLETE: 3-Chapter Playable Campaign, Chain-Reaction Crisis Engine, Campus Pulse Advisor with BIS educational references (IS 1172, IS 732, SWM 2016, NBC Part 4), 4 distinct endings, JSON save/load.
+- Phase 4 COMPLETE:
+  - Node.js Companion Relay Server (`server/server.js`, `server/lib/ws.js`):
+    - Zero-dependency RFC 6455 WebSocket & HTTP server running on port 8090.
+    - Automatic LAN IP detection (`192.168.84.60` on Wi-Fi), prioritizing non-internal IPv4.
+    - Short-lived pairing sessions (15-min token + 4-digit PIN) with rotation support.
+    - Disconnect watchdog: auto-zeroes camera pan/orbit/zoom if phone disconnects or heartbeats fail.
+    - Integration test suite (`server/test-server.js`): 5/5 passed.
+  - Pure C# QR Code Generator (`Assets/_Game/Scripts/Runtime/QrCodeGenerator.cs`):
+    - Completely self-contained byte-mode QR encoder with GF(256) Reed-Solomon ECC.
+    - Generates point-filtered crisp `Texture2D` encoding the live LAN URL (`http://192.168.84.60:8090/?token=...&pin=...`).
+  - Unity Runtime Controller Client (`Assets/_Game/Scripts/Runtime/CampusControllerClient.cs`):
+    - Native `ClientWebSocket` connecting to `ws://127.0.0.1:8090/ws/unity`.
+    - Seamless blending of mobile camera pan/orbit/zoom with desktop keyboard/mouse controls in `CampusSession.cs`.
+    - Dispatches facility selection, focus, overview, pause, advance chapter, and intervention actions into authoritative simulation ledger.
+    - 5 Hz telemetry stream broadcasting live metrics to connected mobile phone.
+  - Responsive Mobile Touch Web App (`server/public/`):
+    - Virtual analog touch joystick with centering spring.
+    - Orbit, zoom, facility strip (all 13 campus facilities), inspection metrics, and action drawer.
+    - Haptic feedback and confirmation dialogs with touch-action isolation.
+  - In-Game Pairing Overlay (`CampusHud.cs`):
+    - `PHONE [QR]` button on top command bar opening QR pairing overlay with live status badge (`PHONE: CONNECTED` vs `PHONE: STANDBY`).
   - Testing & Verification:
-    - 17 EditMode tests pass (0 failures).
-    - 5 PlayMode tests pass (0 failures).
+    - 20 EditMode tests pass (0 failures).
+    - 6 PlayMode tests pass (0 failures).
     - Windows standalone build passes with 0 errors/0 warnings (`builds/Windows/CampusPulse2030.exe`, 171 MB).
-    - Standalone smoke test passes: 13/13 facility ray-picks, UI-blocks, pause/restart, screenshots captured, 12-second benchmark: median 2.99 ms (~315 FPS), p95 4.61 ms (~216 FPS), 3,783 frames on RTX 4060 Laptop / i7-13650HX at 1920x1080. Evidence in `docs/evidence/Phase3/`.
+    - Standalone smoke test passes: 13/13 facilities ray-picks, UI-blocks, 1,619 frames over 12 seconds, 4.86 ms median (~205 FPS), 121 visual walkers on RTX 4060 Laptop / i7-13650HX at 1920x1080. Evidence in `docs/evidence/Phase4/`.
 
 ## Implemented but NOT verified / incomplete
-- None. Phase 3 is 100% complete and verified.
-- Phone LAN controller (Phase 4) and dual-viewport Future Lens visualizer (Phase 5) belong to future phases per project scope.
+- Physical smartphone device testing: Unverified on real physical handset hardware during this automated session. The software stack, networking protocols, HTTP/WS relay, browser client, QR generator, and command pipelines are fully verified via automated tests. Step-by-step physical validation instructions are documented in `docs/phases/PHASE_4.md`.
+- Phase 5 (Cinematic Polish, Audio, Future Lens) belongs to next phase per project scope.
 
 ## Commands and evidence
-- `Invoke-CampusEditor.ps1 -Command edit-tests`: 17 passed, 0 failed (`docs/evidence/Phase3/EditMode-results.xml`).
-- `Invoke-CampusEditor.ps1 -Command play-tests`: 5 passed, 0 failed (`docs/evidence/Phase3/PlayMode-results.xml`).
-- `Invoke-CampusEditor.ps1 -Command build`: Succeeded (`docs/evidence/Phase3/build-result.txt`, `builds/Windows/CampusPulse2030.exe`).
-- Visible player smoke: `CampusPulse2030.exe --campus-smoke -screen-width 1920 -screen-height 1080 -screen-fullscreen 0` (`docs/evidence/Phase3/runtime-report.json`, `overview.png`, `academic-block.png`).
+- `node server/test-server.js`: 5 passed, 0 failed.
+- `Invoke-CampusEditor.ps1 -Command edit-tests`: 20 passed, 0 failed (`docs/evidence/Phase4/EditMode-results.xml`).
+- `Invoke-CampusEditor.ps1 -Command play-tests`: 6 passed, 0 failed (`docs/evidence/Phase4/PlayMode-results.xml`).
+- `Invoke-CampusEditor.ps1 -Command build`: Succeeded (`docs/evidence/Phase4/build-result.txt`, `builds/Windows/CampusPulse2030.exe`).
+- Visible player smoke: `CampusPulse2030.exe --campus-smoke` (`docs/evidence/Phase4/runtime-report.json`, `overview.png`, `academic-block.png`).
 
 ## Build location and result
-`builds/Windows/CampusPulse2030.exe`: Phase 3 standalone build, succeeded, 0 errors/0 warnings (171 MB).
+`builds/Windows/CampusPulse2030.exe`: Phase 4 standalone build, succeeded, 0 errors/0 warnings (171 MB).
 
 ## Known failures / corrections
-- Solved test infinite loop in `StateTests.TrySubmitAction` by adding `OverrideBudgetForTesting()` to `CampusState.cs`.
-- Calibrated `BalancedManager` ending conditions to require financial solvency (`BudgetINR >= 15000`) before evaluating recovery outcomes.
+- Added action alias mapping in `CampusControllerClient.cs` to seamlessly translate mobile action identifiers (`InstallLed` -> `LEDs`, `InstallLowFlow` -> `LowFlow`, etc.) into simulation `ActionKind`.
+- Configured RFC 6455 socket `end` event handling to immediately trigger zero-state disconnect safety reset in Unity.
 
 ## Decisions / scope
-- Simulation owns counts, ledger values, and campaign state; scene presentation and HUD render them deterministically.
-- BIS standards incorporated as educational context, maintaining immersion without quiz barriers.
-- Phase 3 is complete. Per instructions, stopping after Phase 3 until user initiates next phase.
+- Desktop keyboard and mouse fallback remain 100% functional alongside mobile controller.
+- Zero external npm packages required for companion server: pure built-in Node.js libraries ensure 100% offline reliability.
+- Pure C# QR generation eliminates any third-party asset store or internet API dependencies.
+- Phase 4 is complete. Per instructions, stopping after Phase 4 until user initiates next phase.
 
 ## Mobile network info
-Not implemented; outside Phase 3 scope.
+LAN IP: `192.168.84.60`, Port: 8090. Protocol: HTTP + WebSocket (RFC 6455). Companion launch script: `scripts/Start-ControllerServer.ps1`.
 
 ## Assets and provenance
-Original procedural geometry/materials and Unity packages. User references used as direction only. See `docs/ASSET_LICENSES.md`.
+Original code and procedural UI. See `docs/ASSET_LICENSES.md`.
 
 ## Next THREE actions
-1. Stand by for user instruction to begin Phase 4 (Phone LAN controller & dual-device interaction).
-2. Implement WebSocket/HTTP LAN server and pairing QR code mechanism for mobile companion app.
-3. Wire mobile dispatch commands to campus simulation action ledger.
+1. Stand by for user instruction to begin Phase 5 (Cinematic polish, audio, and dual-viewport Future Lens).
+2. Design Future Lens split-screen / slider A/B projection shader and comparative metrics overlay.
+3. Add timeline camera choreography flyover and environmental sound effects.
 
 ## Resume
-Read `AGENTS.md`, `GAME_SPEC.md`, `docs/phases/PHASE_3.md` and this file. Phase 3 is verified and complete. Ready to begin Phase 4 upon user prompt.
+Read `AGENTS.md`, `GAME_SPEC.md`, `docs/phases/PHASE_4.md` and this file. Phase 4 is verified and complete. Ready to begin Phase 5 upon user prompt.

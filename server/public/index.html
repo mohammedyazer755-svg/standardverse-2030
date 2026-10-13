@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#030910">
+    <title>Campus Pulse 2030 // Mobile Controller</title>
+    <link rel="stylesheet" href="controller.css">
+</head>
+<body>
+    <div id="app" class="cyber-container">
+        <!-- Top Status Bar -->
+        <header class="status-bar">
+            <div class="brand">
+                <span class="logo-pulse"></span>
+                <span class="brand-text">CAMPUS // PULSE</span>
+            </div>
+            <div class="chapter-badge" id="chapterText">CH 1: NORMAL DAY</div>
+            <div class="connection-pill" id="connPill">
+                <span class="status-dot"></span>
+                <span class="status-label" id="connLabel">CONNECTING...</span>
+            </div>
+        </header>
+
+        <!-- Live Metrics Bar -->
+        <section class="telemetry-bar">
+            <div class="stat-col"><span class="k">BUDGET</span><span class="v" id="statBudget">₹1,50,000</span></div>
+            <div class="stat-col"><span class="k">POWER</span><span class="v" id="statPower">450 kW</span></div>
+            <div class="stat-col"><span class="k">WATER</span><span class="v" id="statWater">42 kL</span></div>
+            <div class="stat-col"><span class="k">SATISF.</span><span class="v highlight" id="statSat">82%</span></div>
+        </section>
+
+        <!-- Main Controller Body (Dual Column or Stacked) -->
+        <main class="controller-stage">
+            <!-- Left: Virtual Joystick -->
+            <div class="joystick-wrapper">
+                <div class="panel-header">CAMERA PAN</div>
+                <div class="joystick-boundary" id="joyBoundary">
+                    <div class="joystick-knob" id="joyKnob"></div>
+                </div>
+                <div class="joystick-hint">TOUCH & DRAG TO PAN</div>
+            </div>
+
+            <!-- Right: Camera Navigation & Quick Triggers -->
+            <div class="cam-tools-wrapper">
+                <div class="panel-header">CAMERA NAVIGATION</div>
+                <div class="btn-grid-row">
+                    <button class="tool-btn" id="btnOrbitL">⟲ ORBIT L</button>
+                    <button class="tool-btn" id="btnOrbitR">ORBIT R ⟳</button>
+                </div>
+                <div class="btn-grid-row">
+                    <button class="tool-btn" id="btnZoomIn">＋ ZOOM IN</button>
+                    <button class="tool-btn" id="btnZoomOut">－ ZOOM OUT</button>
+                </div>
+                <div class="btn-grid-row">
+                    <button class="tool-btn action-tint" id="btnOverview">OVERVIEW</button>
+                    <button class="tool-btn action-tint" id="btnFocus">FOCUS [F]</button>
+                </div>
+                <div class="btn-grid-row">
+                    <button class="tool-btn pause-tint" id="btnPause">PAUSE / RESUME</button>
+                    <button class="tool-btn adv-tint" id="btnNextCh">NEXT CH →</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Facility Quick Strip -->
+        <section class="facility-strip-section">
+            <div class="strip-header">CAMPUS FACILITIES (TAP TO INSPECT)</div>
+            <div class="facility-scroll-strip" id="facilityStrip">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- Selected Facility & Intervention Action Sheet -->
+        <section class="action-sheet" id="actionSheet">
+            <div class="sheet-header">
+                <div class="sheet-title-col">
+                    <div class="sheet-eyebrow" id="facType">FACILITY / TELEMETRY</div>
+                    <div class="sheet-name" id="facName">Select a Facility</div>
+                </div>
+                <button class="sheet-close" id="btnDismissSheet">✕</button>
+            </div>
+
+            <div class="facility-metrics-grid" id="facMetrics">
+                <div class="fac-metric-box"><span class="label">OCCUPANTS</span><span class="val" id="facOcc">--</span></div>
+                <div class="fac-metric-box"><span class="label">POWER</span><span class="val" id="facPower">-- kW</span></div>
+                <div class="fac-metric-box"><span class="label">WATER</span><span class="val" id="facWater">-- L/m</span></div>
+                <div class="fac-metric-box"><span class="label">WASTE</span><span class="val" id="facWaste">-- kg</span></div>
+            </div>
+
+            <div class="action-list-header">AVAILABLE INTERVENTIONS</div>
+            <div class="action-btn-list" id="actionBtnList">
+                <!-- Injected dynamically -->
+            </div>
+        </section>
+
+        <!-- Intervention Confirmation Modal -->
+        <div class="modal-backdrop" id="confirmModal">
+            <div class="confirm-box">
+                <div class="modal-title">CONFIRM WORK ORDER</div>
+                <div class="modal-desc" id="confirmDesc">Execute intervention for this facility?</div>
+                <div class="modal-meta" id="confirmMeta">Cost: ₹25,000 | Staff: 2 Slots</div>
+                <div class="modal-btn-row">
+                    <button class="btn-cancel" id="btnCancelAction">CANCEL</button>
+                    <button class="btn-confirm" id="btnConfirmAction">EXECUTE ORDER</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual PIN Pairing Modal (shown if token missing) -->
+        <div class="modal-backdrop" id="pairingModal">
+            <div class="confirm-box">
+                <div class="modal-title">ENTER PAIRING PIN</div>
+                <p class="modal-desc">Enter the 4-digit code displayed on the laptop screen:</p>
+                <input type="number" id="pinInput" class="pin-field" placeholder="0000" maxlength="4" pattern="\d{4}">
+                <button class="btn-confirm" id="btnSubmitPin">PAIR CONTROLLER</button>
+                <div class="pin-error" id="pinError"></div>
+            </div>
+        </div>
+
+        <!-- In-game Feedback Toast -->
+        <div class="feedback-toast" id="feedbackToast">Connected to Campus Pulse 2030</div>
+    </div>
+
+    <script src="controller.js"></script>
+</body>
+</html>

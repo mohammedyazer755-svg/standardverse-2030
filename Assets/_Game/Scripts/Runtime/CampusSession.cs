@@ -19,10 +19,13 @@ namespace CampusPulse
         public FacilityView Hovered { get; private set; }
         public CampusCampaign Campaign { get; private set; }
         public CampusAdvisor Advisor { get; private set; }
+        public CampusControllerClient ControllerClient;
         public event Action<FacilityView> SelectionChanged;
         float clock;
         void Awake()
         {
+            if (!ControllerClient) ControllerClient = gameObject.GetComponent<CampusControllerClient>() ?? gameObject.AddComponent<CampusControllerClient>();
+            ControllerClient.Session = this;
             ResetState();
             Application.targetFrameRate = 60;
             Application.runInBackground = true;
@@ -114,7 +117,17 @@ namespace CampusPulse
                 if (Keyboard.current.fKey.wasPressedThisFrame) FocusSelected();
             }
             bool blocked = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
-            Rig.Apply(StrategicCamera.ReadDesktop(blocked), Time.unscaledDeltaTime);
+            var camCmd = StrategicCamera.ReadDesktop(blocked);
+            if (ControllerClient != null)
+            {
+                var mob = ControllerClient.ReadMobileCommand();
+                camCmd.Pan += mob.Pan;
+                camCmd.Pan = Vector2.ClampMagnitude(camCmd.Pan, 1f);
+                camCmd.Orbit += mob.Orbit;
+                camCmd.Zoom += mob.Zoom;
+                camCmd.Reset = camCmd.Reset || mob.Reset;
+            }
+            Rig.Apply(camCmd, Time.unscaledDeltaTime);
             if (Mouse.current != null)
             {
                 var hover = Pick(Mouse.current.position.ReadValue(), blocked);

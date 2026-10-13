@@ -126,4 +126,31 @@ public sealed class SceneTests
         yield return null;
         LogAssert.NoUnexpectedReceived();
     }
+
+    [UnityTest] public IEnumerator MobileControllerClientInitializationAndQrModal()
+    {
+        yield return SceneManager.LoadSceneAsync("Campus"); yield return null;
+        var session = Object.FindFirstObjectByType<CampusSession>();
+        Assert.NotNull(session);
+        session.Begin();
+
+        // 1. Verify ControllerClient attached
+        Assert.NotNull(session.ControllerClient);
+        Assert.AreEqual(8090, session.ControllerClient.ServerPort);
+
+        // 2. Open QR Modal
+        Assert.NotNull(session.Hud);
+        session.Hud.ToggleQrModal();
+        yield return null;
+
+        // 3. Verify camera command integration
+        var initialCamTarget = session.Rig.Target;
+        session.Rig.Apply(new CameraCommand { Pan = new Vector2(1f, 0f) }, 0.5f);
+        yield return null;
+        Assert.AreNotEqual(initialCamTarget.x, session.Rig.Target.x);
+
+        session.Hud.ToggleQrModal();
+        yield return null;
+        LogAssert.NoUnexpectedReceived();
+    }
 }

@@ -20,7 +20,9 @@ namespace CampusPulse
 
         // Modals
         GameObject menu, inspectorPanel, actionDrawer;
-        GameObject chapterModal, endingModal, bisModal;
+        GameObject chapterModal, endingModal, bisModal, qrModal;
+        RawImage qrImage;
+        Text qrStatusText, qrUrlText, qrPinText;
         Text chapterModalTitle, chapterModalDetail;
         Text endingModalTitle, endingModalSummary, endingScoresText;
         Text bisModalTitle, bisModalDetail;
@@ -62,9 +64,10 @@ namespace CampusPulse
             chapterTitleText = Label(header, "CHAPTER 1: THE NORMAL DAY", 12, gold, 24, 44, 420, 20);
             summary = Label(header, "", 15, Color.white, 440, 14, 980, 26);
             timeText = Label(header, "", 13, gold, 440, 44, 980, 22);
-            Button(header, "OVERVIEW", 1440, 14, 130, () => Session.Overview());
-            Button(header, "SAVE", 1580, 14, 90, () => Session.SaveGame());
-            Button(header, "LOAD", 1680, 14, 90, () => Session.LoadGame());
+            Button(header, "OVERVIEW", 1370, 14, 105, () => Session.Overview());
+            Button(header, "SAVE", 1485, 14, 75, () => Session.SaveGame());
+            Button(header, "LOAD", 1570, 14, 75, () => Session.LoadGame());
+            Button(header, "PHONE [QR]", 1655, 14, 185, () => ToggleQrModal());
 
             // 2. Bottom Navigation Bar
             var footer = Panel(root.transform, "Navigation", Vector2.zero, new Vector2(1, 0), new Vector2(20, 20), new Vector2(-20, 75));
@@ -136,6 +139,7 @@ namespace CampusPulse
             BuildChapterModal(root.transform);
             BuildEndingModal(root.transform);
             BuildBisModal(root.transform);
+            BuildQrModal(root.transform);
 
             RebuildActionButtons();
         }
@@ -193,6 +197,42 @@ namespace CampusPulse
             bisModal.SetActive(true);
         }
 
+        public void ToggleQrModal()
+        {
+            if (qrModal != null) qrModal.SetActive(!qrModal.activeSelf);
+        }
+
+        void BuildQrModal(Transform parent)
+        {
+            qrModal = Panel(parent, "QrModal", new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-420, -250), new Vector2(420, 250)).gameObject;
+            qrModal.SetActive(false);
+            var tr = qrModal.transform;
+
+            Label(tr, "CAMPUS PULSE 2030 // MOBILE QR CONTROLLER", 12, gold, 30, 20, 780, 20);
+            Label(tr, "WIRELESS CONTROLLER PAIRING", 22, cyan, 30, 44, 780, 30);
+
+            // Left: QR Code Box
+            var qrBox = new GameObject("QR Container", typeof(RectTransform), typeof(RawImage));
+            qrBox.transform.SetParent(tr, false);
+            var rt = (RectTransform)qrBox.transform;
+            Place(rt, 30, 85, 260, 260);
+            qrImage = qrBox.GetComponent<RawImage>();
+
+            // Right: Connection Info & Instructions
+            qrStatusText = Label(tr, "STATUS: WAITING FOR PHONE SCAN...", 14, alertRed, 315, 85, 480, 24);
+            qrUrlText = Label(tr, "URL: Initializing LAN listener...", 12, Color.white, 315, 115, 480, 38);
+            qrPinText = Label(tr, "PAIRING PIN: [ ---- ]", 20, gold, 315, 158, 480, 30);
+
+            Label(tr, "<b>PAIRING & CONNECTIVITY GUIDE:</b>\n• Ensure smartphone is on the <b>same Wi-Fi</b> or Laptop Mobile Hotspot.\n• Open standard camera on Android / iOS and scan the QR code above.\n• Controller runs entirely in mobile browser (no app install needed).\n• If needed, allow incoming LAN connection on Windows Firewall (Port 8090).", 12, muted, 315, 198, 480, 95);
+
+            MakeButton(tr, "ROTATE PIN / TOKEN", 315, 305, 220, 34, () =>
+            {
+                Session.ControllerClient?.RotateSession();
+            });
+
+            Button(tr, "DISMISS OVERLAY", 30, 375, 780, () => qrModal.SetActive(false));
+        }
+
         void CreateCategoryTabs(Transform parent, float y)
         {
             var categories = new[] { ResourceCategory.Water, ResourceCategory.Energy, ResourceCategory.Waste, ResourceCategory.Crowd };
@@ -221,6 +261,27 @@ namespace CampusPulse
             // Header Telemetry
             summary.text = $"WATER  {s.WaterStoredLiters / 1000:0.0} kL / {s.WaterCapacityLiters / 1000:0} kL     ENERGY  {s.TotalPowerDemandKW:0} kW / {s.TotalPowerSupplyKW:0} kW     BUDGET  INR {s.BudgetINR:N0}     STAFF  {s.StaffAvailable}/{s.StaffTotal}";
             timeText.text = $"DAY {s.Minute / 1440 + 1:00}  •  {s.Minute / 60 % 24:00}:{s.Minute % 60:00}    •    SATISFACTION {s.Satisfaction}%    SUSTAINABILITY {s.Sustainability}%    •    {Session.Mode.ToString().ToUpperInvariant()}";
+
+            if (Session.ControllerClient != null)
+            {
+                var cc = Session.ControllerClient;
+                timeText.text += cc.IsPhoneConnected
+                    ? $"    •    <color=#2ecc71>PHONE: CONNECTED ({cc.ConnectedDeviceName})</color>"
+                    : "    •    <color=#94a3b8>PHONE: STANDBY [QR]</color>";
+
+                if (qrModal != null && qrModal.activeSelf)
+                {
+                    if (qrImage != null && cc.QrTexture != null) qrImage.texture = cc.QrTexture;
+                    if (qrStatusText != null)
+                    {
+                        qrStatusText.text = cc.IsPhoneConnected
+                            ? $"STATUS: <color=#2ecc71>CONNECTED ({cc.ConnectedDeviceName})</color>"
+                            : "STATUS: <color=#e67e22>WAITING FOR PHONE SCAN...</color>";
+                    }
+                    if (qrUrlText != null) qrUrlText.text = $"LAN URL: {cc.ControllerUrl}";
+                    if (qrPinText != null) qrPinText.text = $"PAIRING PIN: [ <color=#f1c40f>{cc.Pin}</color> ]";
+                }
+            }
 
             if (camp != null)
             {

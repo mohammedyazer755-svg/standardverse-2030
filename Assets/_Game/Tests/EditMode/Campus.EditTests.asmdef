@@ -1,1 +1,1 @@
-{"name":"Campus.EditTests","references":["Campus.Simulation"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}
+{"name":"Campus.EditTests","references":["Campus.Simulation","Campus.Runtime"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}
