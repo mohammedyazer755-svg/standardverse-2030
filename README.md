@@ -2,6 +2,8 @@
 
 Unity 6.3 URP campus environment. Current verified status is in [progress.md](progress.md).
 
+[GitHub repository](https://github.com/mohammedyazer755-svg/standardverse-2030) · [Download verified Windows foundation](https://github.com/mohammedyazer755-svg/standardverse-2030/releases/tag/foundation-v0.1.0). The release contains the foundation; `main` also preserves unfinished Phase 1 source. See [distribution details and checksum](docs/DISTRIBUTION.md).
+
 Open this repository root in Unity **6000.3.26f1**. Packages resolve from `Packages/manifest.json` and the lock file. Open `Assets/_Game/Scenes/Campus.unity` after scene generation; press Play and **Enter Campus**.
 
 Controls: WASD/arrows pan; Q/E or right-drag orbit; scroll zoom; middle-drag pan; click facility to inspect; F focuses selection; Home returns to overview; Esc pauses. HUD buttons provide focus, overview, pause/resume and restart.

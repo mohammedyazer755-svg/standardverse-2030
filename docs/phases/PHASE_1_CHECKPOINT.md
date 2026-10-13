@@ -37,3 +37,4 @@ Wait for `Logs/Campus/automation-result.txt` to report success. Then run `play-t
 - `progress.md` updated with this incomplete status and the GitHub destination.
 - Checkpoint lookup: `git log -1 --format="%h %s" -- docs/phases/PHASE_1_CHECKPOINT.md`.
 - Branch: `main`. Checkpoint is explicitly WIP and does not certify Phase 1 completion.
+- WIP source/reporting checkpoint `5c9df0c` pushed successfully; remote SHA matched local HEAD. The subsequent distribution documentation commit records the verified release. See `docs/DISTRIBUTION.md` for links and checksum.

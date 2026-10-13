@@ -39,7 +39,10 @@ Windows Security displays a network-access prompt for campuspulse2030. It is not
 
 ## Decision log / architecture changes
 - User requires every phase-end/incomplete handoff to record implementation, actual tests, failures/incomplete work, changed files, exact next action, updated progress.md and an appropriate Git checkpoint. Enforced in AGENTS.md; phase reports and template added under docs/.
-- User-designated GitHub destination: https://github.com/mohammedyazer755-svg/standardverse-2030 (inspected empty before initial upload). Source/evidence to main; verified foundation executable to a release asset. Upload verification pending below.
+- User-designated GitHub destination: https://github.com/mohammedyazer755-svg/standardverse-2030 (inspected empty before initial upload). Source/evidence pushed to main; verified foundation executable uploaded to release `foundation-v0.1.0`.
+- GitHub verified source checkpoint: `5c9df0c0b0e3948a8a2f9f9aa3ffb0549e6e6d94` matched local HEAD via `git ls-remote`. Foundation tag points to `3485028`. Final distribution documentation follows in a separate commit; use `git log -1` and `git ls-remote origin refs/heads/main` to compare it.
+- Release asset verified uploaded: 68,858,530 bytes, 302 archive entries, executable and player DLL present. Server/local SHA-256 match: `012e46a3423275ffc20dde27e5da603c897ce1788d281520c6c5a55ac18f534d`. Links and launch steps: `docs/DISTRIBUTION.md`.
+- Phase reporting files: `docs/PHASE_HANDOFF_TEMPLATE.md`, `docs/phases/FOUNDATION.md`, `docs/phases/PHASE_1_CHECKPOINT.md` and actual changed-file lists. Reviewed foundation evidence copied into `docs/evidence/Foundation/` for repository retention.
 - Complete and verify foundation before Phase 1 expansion.
 - Use original procedural architectural kit, with campus reference guiding massing/landscape and restrained cyan UI accents.
 - Preserve the existing open editor; use bounded local editor automation rather than a competing editor on the same project.
@@ -57,4 +60,4 @@ Unity template assets; user-supplied references for direction only. No reference
 
 ## How a fresh AI resumes
 Read AGENTS.md and listed docs; inspect actual files and Logs before acting. Do not regenerate user-authored scenes or claim Phase 1 completion without rendered and runtime evidence.
-The currently saved Campus scene and Windows executable are the verified three-block FOUNDATION, not the unverified benchmark source. Preserve `Logs/Campus/Foundation/` and do not mistake those images for Phase 1 art. The source working tree contains the in-progress Phase 1 changes after the foundation commit.
+The currently saved Campus scene and Windows executable are the verified three-block FOUNDATION, not the unverified benchmark source. Preserve `docs/evidence/Foundation/` and local `Logs/Campus/Foundation/`; do not mistake those images for Phase 1 art. In-progress Phase 1 source is checkpointed on GitHub main after the foundation commit. Publishing did not resolve the earlier editor blocker or verify Phase 1.

@@ -10,6 +10,7 @@ Assets/_Game/Scripts/Runtime/StrategicCamera.cs
 Assets/_Game/Tests/PlayMode/SceneTests.cs
 README.md
 docs/ACCEPTANCE.md
+docs/DISTRIBUTION.md
 docs/PHASE_HANDOFF_TEMPLATE.md
 docs/evidence/Foundation/EditMode-results.xml
 docs/evidence/Foundation/PlayMode-results.xml
