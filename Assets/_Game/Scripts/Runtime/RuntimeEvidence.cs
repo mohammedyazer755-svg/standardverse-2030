@@ -48,6 +48,22 @@ namespace CampusPulse
             ScreenCapture.CaptureScreenshot(Path.Combine(folder,"overview.png"));
             s.Select(s.Facilities[0]); s.FocusSelected(); yield return new WaitForSeconds(2);
             ScreenCapture.CaptureScreenshot(Path.Combine(folder,"academic-block.png"));
+            yield return new WaitForSeconds(2);
+
+            // Phase 5 Evidence: Future Lens & Digital Twin Network
+            var fl = FindFirstObjectByType<FutureLensManager>();
+            if (fl)
+            {
+                fl.SetFutureLensActive(true);
+                yield return new WaitForSeconds(2.0f);
+                ScreenCapture.CaptureScreenshot(Path.Combine(folder,"future-lens.png"));
+                yield return new WaitForSeconds(2.0f);
+                fl.SetFutureLensActive(false);
+                yield return new WaitForSeconds(1.5f);
+            }
+            s.Overview(); yield return new WaitForSeconds(2.0f);
+            ScreenCapture.CaptureScreenshot(Path.Combine(folder,"digital-twin.png"));
+            yield return new WaitForSeconds(2.0f);
             QualitySettings.vSyncCount = 0; Application.targetFrameRate = -1;
             var times = new List<float>(); float start = Time.realtimeSinceStartup;
             while (Time.realtimeSinceStartup - start < 12) { yield return null; times.Add(Time.unscaledDeltaTime * 1000); }

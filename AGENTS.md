@@ -1,6 +1,6 @@
 # Campus Pulse 2030
 
-Read `docs/GAME_SPEC.md`, `docs/IMPLEMENTATION_PLAN.md`, and `progress.md` before edits. The Unity project is at repository root. Preserve existing scenes and metadata. Current user scope: finish and verify incomplete Phase 1 prerequisites, then implement Phase 2 interconnected resource gameplay. Do not begin Phase 3.
+Read `docs/GAME_SPEC.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/FINAL_GAME_IMPLEMENTATION_PLAN.md`, and `progress.md` before edits. The Unity project is at repository root. Preserve existing scenes and metadata. Current user scope (13 October 2026): final-game implementation planning for Phase 6, preserving previous phases. Required design: real ground-level third-person player, a few human-size animated walking students, and overhead management; first-person optional. Audit and fix critical integration defects before feature implementation. The latest user request supersedes earlier Phase 2/4 stopping instructions. This planning handoff does not claim release readiness.
 
 Simulation owns counts and resource values; scene objects only present them. Never claim tests, screenshots, device interoperability, or performance without captured evidence. Update `progress.md` after milestones and at handoff. Keep generated artifacts in `builds/` or `Logs/`, and preserve all source assets and `.meta` files. Editor automation must not discard dirty user scenes.
 

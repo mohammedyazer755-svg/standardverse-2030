@@ -1,0 +1,86 @@
+﻿{
+    "dateAsiaCalcutta":  "2026-10-13",
+    "scope":  "Planning audit; no Unity tests or build run in this task",
+    "baselineCommit":  "d6a9f291f505dadda53c1e9e462b8f3475cd1190",
+    "existingWorktreeEntries":  90,
+    "nodeVersion":  "v24.19.0",
+    "syntaxChecks":  [
+                         {
+                             "command":  "node --check server/server.js",
+                             "exitCode":  0,
+                             "output":  null
+                         },
+                         {
+                             "command":  "node --check server/lib/ws.js",
+                             "exitCode":  0,
+                             "output":  null
+                         },
+                         {
+                             "command":  "node --check server/public/controller.js",
+                             "exitCode":  0,
+                             "output":  null
+                         },
+                         {
+                             "command":  "node --check server/test-server.js",
+                             "exitCode":  0,
+                             "output":  null
+                         }
+                     ],
+    "historicalUnityResults":  [
+                                   {
+                                       "source":  "Logs/Campus/EditMode-results.xml",
+                                       "sha256":  "98004C5005323C2B974F91EF1B400ABA4CA2F05C21F12A55ADA22567ED99150B",
+                                       "result":  "Passed",
+                                       "total":  "22",
+                                       "passed":  "22",
+                                       "failed":  "0",
+                                       "recordedStartUtc":  "2026-10-13 08:28:51Z",
+                                       "failures":  [
+
+                                                    ]
+                                   },
+                                   {
+                                       "source":  "Logs/Campus/PlayMode-results.xml",
+                                       "sha256":  "6854AF9E540A60367124AEA2484D0BEF5A25AD007FB4A48545401E805E2F3BCA",
+                                       "result":  "Failed(Child)",
+                                       "total":  "7",
+                                       "passed":  "0",
+                                       "failed":  "7",
+                                       "recordedStartUtc":  "2026-10-13 08:25:44Z",
+                                       "failures":  [
+                                                        {
+                                                            "test":  "CampaignProgressionAdvisorAndSaveLoad",
+                                                            "message":  "Unhandled log message: \u0027[Log] [Controller] Unity connected to Relay WebSocket.\u0027. Use UnityEngine.TestTools.LogAssert.Expect"
+                                                        },
+                                                        {
+                                                            "test":  "FoundationInteractionAndPause",
+                                                            "message":  "Unhandled log message: \u0027[Log] [Controller] Unity connected to Relay WebSocket.\u0027. Use UnityEngine.TestTools.LogAssert.Expect"
+                                                        },
+                                                        {
+                                                            "test":  "FullCampusHasEveryRequiredFacility",
+                                                            "message":  "Unhandled log message: \u0027[Log] [Controller] Unity connected to Relay WebSocket.\u0027. Use UnityEngine.TestTools.LogAssert.Expect"
+                                                        },
+                                                        {
+                                                            "test":  "LivingCampusPresentationFollowsState",
+                                                            "message":  "Unhandled log message: \u0027[Log] [Controller] Unity connected to Relay WebSocket.\u0027. Use UnityEngine.TestTools.LogAssert.Expect"
+                                                        },
+                                                        {
+                                                            "test":  "MobileControllerClientInitializationAndQrModal",
+                                                            "message":  "Unhandled log message: \u0027[Log] [Controller] Unity connected to Relay WebSocket.\u0027. Use UnityEngine.TestTools.LogAssert.Expect"
+                                                        },
+                                                        {
+                                                            "test":  "Phase5CinematicAndDigitalTwinSystems",
+                                                            "message":  "  CampusAudioManager must be attached to session\n  Expected: not null\n  But was:  null\n"
+                                                        },
+                                                        {
+                                                            "test":  "PlayableResourceInterventionsAndStateSync",
+                                                            "message":  "Unhandled log message: \u0027[Log] [Controller] Unity connected to Relay WebSocket.\u0027. Use UnityEngine.TestTools.LogAssert.Expect"
+                                                        }
+                                                    ]
+                                   }
+                               ],
+    "buildEvidence":  "docs/evidence/Phase4/build-result.txt",
+    "buildProvenance":  "Existing executable not rebuilt or launched; PE executable timestamp does not identify bundled scene content",
+    "physicalPhone":  "Not tested",
+    "screenshotReviewed":  "docs/evidence/Phase4/overview.png (historical capture)"
+}

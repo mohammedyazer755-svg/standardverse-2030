@@ -26,7 +26,11 @@ class SimpleWebSocket extends EventEmitter {
             }
         });
         socket.on('error', (err) => {
-            this.emit('error', err);
+            this.isAlive = false;
+            if (this.listenerCount('error') > 0) {
+                this.emit('error', err);
+            }
+            this.emit('close');
         });
     }
 

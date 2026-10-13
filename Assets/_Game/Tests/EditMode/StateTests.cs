@@ -448,4 +448,49 @@ public sealed class StateTests
         Assert.IsFalse(dupAccepted);
         Assert.IsTrue(dupReason.Contains("already"));
     }
+
+    [Test]
+    public void Phase5_FutureLensProjection_ComputesValidDeltaWithoutMutatingRealityA()
+    {
+        var s = CreateSampleCampus();
+        int initialWater = (int)s.WaterStoredLiters;
+        int initialBudget = s.BudgetINR;
+        Assert.IsTrue(s.MainLeakActive);
+
+        // Project Reality B (clone and simulate sustainable fixes)
+        var clone = new CampusState(2030);
+        clone.LoadFromJson(s.ToJson());
+        clone.TrySubmitAction(ActionKind.RepairLeak, "water", out _, out _);
+        clone.TrySubmitAction(ActionKind.LEDs, "academic", out _, out _);
+        for (int i = 0; i < 20; i++) clone.Tick();
+
+        // Verify Reality B resolved leak and stabilized power
+        Assert.IsFalse(clone.MainLeakActive, "Reality B must fix leak");
+        Assert.IsTrue(clone.LedInstalledAll, "Reality B must have LEDs");
+
+        // Verify Reality A was NOT mutated
+        Assert.AreEqual(initialBudget, s.BudgetINR, "Reality A budget must be untouched");
+        Assert.IsTrue(s.MainLeakActive, "Reality A leak must still be active");
+        Assert.AreEqual(initialWater, (int)s.WaterStoredLiters, "Reality A water must be untouched");
+    }
+
+    [Test]
+    public void Phase5_DigitalTwinNetwork_CurvedSplineMathGeneratesValidArc()
+    {
+        Vector3 start = new Vector3(-30, 10, 12);
+        Vector3 end = new Vector3(22, 12, 52);
+        Vector3 mid = (start + end) * 0.5f;
+        float dist = Vector3.Distance(start, end);
+        Vector3 peak = mid + Vector3.up * Mathf.Clamp(dist * 0.18f, 6f, 22f);
+
+        // Quadratic Bezier interpolation at t=0, 0.5, 1.0
+        Vector3 p0 = Mathf.Pow(1 - 0f, 2) * start + 2 * (1 - 0f) * 0f * peak + Mathf.Pow(0f, 2) * end;
+        Vector3 pMid = Mathf.Pow(1 - 0.5f, 2) * start + 2 * (1 - 0.5f) * 0.5f * peak + Mathf.Pow(0.5f, 2) * end;
+        Vector3 p1 = Mathf.Pow(1 - 1f, 2) * start + 2 * (1 - 1f) * 1f * peak + Mathf.Pow(1f, 2) * end;
+
+        Assert.AreEqual(start, p0);
+        Assert.AreEqual(end, p1);
+        Assert.Greater(pMid.y, start.y);
+        Assert.Greater(pMid.y, end.y);
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditor.TestTools.TestRunner.Api;
 using UnityEngine;
 
@@ -16,11 +17,13 @@ namespace CampusPulse.Editor
         {
             EditorApplication.update += Poll;
             runner = ScriptableObject.CreateInstance<TestRunnerApi>();
-            runner.RegisterCallbacks(new Results());
+            var results = ScriptableObject.CreateInstance<Results>();
+            runner.RegisterCallbacks(results);
         }
         static void Poll()
         {
             if (EditorApplication.timeSinceStartup < next || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+            if (EditorApplication.isPlaying || EditorApplication.isPlayingOrWillChangePlaymode) return;
             next = EditorApplication.timeSinceStartup + 1;
             const string request = "Library/CampusAutomation/request.txt";
             if (!File.Exists(request)) return;
@@ -30,6 +33,13 @@ namespace CampusPulse.Editor
             {
                 switch (command)
                 {
+                    case "status":
+                        var scenes = new System.Text.StringBuilder();
+                        for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++) {
+                            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+                            scenes.AppendLine(scene.path + " dirty=" + scene.isDirty);
+                        }
+                        File.WriteAllText("Logs/Campus/editor-status.txt", scenes.ToString()); break;
                     case "foundation": CampusBuilder.Foundation(); break;
                     case "refresh": AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate); UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation(); break;
                     case "benchmark": LivingCampusBuilder.Benchmark(); break;
@@ -48,7 +58,7 @@ namespace CampusPulse.Editor
             SessionState.SetString("CampusTestMode",mode.ToString());
             runner.Execute(new ExecutionSettings(new Filter { testMode = mode, assemblyNames = new[]{mode == TestMode.EditMode ? "Campus.EditTests" : "Campus.PlayTests"} }));
         }
-        sealed class Results : ICallbacks
+        sealed class Results : ScriptableObject, ICallbacks
         {
             public void RunStarted(ITestAdaptor testsToRun) { }
             public void TestStarted(ITestAdaptor test) { }

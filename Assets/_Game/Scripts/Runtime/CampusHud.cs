@@ -69,6 +69,10 @@ namespace CampusPulse
             Button(header, "LOAD", 1570, 14, 75, () => Session.LoadGame());
             Button(header, "PHONE [QR]", 1655, 14, 185, () => ToggleQrModal());
 
+            Button(header, "FUTURE LENS [L]", 1370, 48, 140, () => FutureLensManager.Instance?.ToggleFutureLens());
+            Button(header, "AUDIO 🔊", 1520, 48, 95, () => ToggleAudio());
+            Button(header, "QUALITY ⚡", 1625, 48, 215, () => CycleQuality());
+
             // 2. Bottom Navigation Bar
             var footer = Panel(root.transform, "Navigation", Vector2.zero, new Vector2(1, 0), new Vector2(20, 20), new Vector2(-20, 75));
             Label(footer, "WASD PAN   Q/E ORBIT   SCROLL ZOOM   F FOCUS   ESC PAUSE", 13, muted, 20, 16, 520, 24);
@@ -200,6 +204,30 @@ namespace CampusPulse
         public void ToggleQrModal()
         {
             if (qrModal != null) qrModal.SetActive(!qrModal.activeSelf);
+        }
+
+        void ToggleAudio()
+        {
+            if (CampusAudioManager.Instance != null)
+            {
+                CampusAudioManager.Instance.ToggleMute();
+                TriggerFeedback(CampusAudioManager.Instance.IsMuted ? "Audio muted" : "Audio unmuted");
+            }
+        }
+
+        void CycleQuality()
+        {
+            int levels = QualitySettings.names.Length;
+            if (levels > 1)
+            {
+                int next = (QualitySettings.GetQualityLevel() + 1) % levels;
+                QualitySettings.SetQualityLevel(next, true);
+                TriggerFeedback($"Quality preset: {QualitySettings.names[next]}");
+            }
+            else
+            {
+                TriggerFeedback("Quality: High");
+            }
         }
 
         void BuildQrModal(Transform parent)

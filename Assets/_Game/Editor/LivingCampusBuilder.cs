@@ -12,7 +12,7 @@ namespace CampusPulse.Editor
 {
     public static class LivingCampusBuilder
     {
-        static Material stone, trim, glass, roof, metal, lawn, paving, road, bark, leaves, leavesLight, white, aqua;
+        static Material stone, trim, glass, roof, metal, lawn, paving, road, bark, leaves, leavesLight, white, aqua, warmGlazing, greenRoof, pondWater;
         static readonly List<Transform> trees = new List<Transform>();
         static readonly List<Transform> rotors = new List<Transform>();
         static readonly List<Renderer> lamps = new List<Renderer>();
@@ -39,9 +39,15 @@ namespace CampusPulse.Editor
             leavesLight=Material("Foliage sage",new Color(.33f,.43f,.19f),0,.15f);
             white=Material("Road paint",new Color(.8f,.8f,.69f));
             aqua=Material("Selection cyan",new Color(.03f,.75f,.83f),.2f,.5f);
+            warmGlazing=Material("Warm interior glazing",new Color(.98f,.82f,.55f),.1f,.85f);
+            warmGlazing.EnableKeyword("_EMISSION");
+            warmGlazing.SetColor("_EmissionColor",new Color(1f,.78f,.44f)*1.5f);
+            greenRoof=Material("Sedum green roof",new Color(.28f,.42f,.20f),0f,.18f);
+            pondWater=Material("Reflection pond water",new Color(.04f,.34f,.46f),.65f,.95f);
             var groundRoot=new GameObject("Campus landscape").transform;
             Box("Landscape base",new Vector3(0,-.35f,0),new Vector3(230,.6f,185),lawn,groundRoot);
             Box("Foundation perimeter",new Vector3(0,-1.1f,0),new Vector3(232,1.1f,187),stone,groundRoot);
+            ReflectionPond(groundRoot,new Vector3(-3,0,14),22,14);
             var academic=Building("academic","School of Engineering","Teaching studios, lecture rooms and a shaded academic courtyard.",new Vector3(-30,0,12),34,19,4,true);
             facilities.Add(academic);
             LandscapeBlock(academic,34,19);
@@ -113,6 +119,8 @@ namespace CampusPulse.Editor
             float boundDepth=depth+(wings?12:0); float centerZ=wings?-6:0;
             var pin=new GameObject("Digital Twin Pin").transform; pin.SetParent(root.transform,false);
             pin.localPosition=new Vector3(0,height+3.2f,centerZ);
+            var beacon=Shape(PrimitiveType.Cylinder,"Projector Base Ring",root.transform,new Vector3(0,height+.95f,centerZ),new Vector3(4.5f,.25f,4.5f),metal);
+            Shape(PrimitiveType.Cylinder,"Projector Lens Glow",beacon.transform,new Vector3(0,.14f,0),new Vector3(4.2f,.06f,4.2f),aqua);
             var pinGlow=Shape(PrimitiveType.Cylinder,"Pin Glow",pin,Vector3.zero,new Vector3(1.3f,.15f,1.3f),aqua);
             pinGlow.transform.localRotation=Quaternion.Euler(90,0,0);
             f.StatusPinGlow=pinGlow.GetComponent<Renderer>();
@@ -134,6 +142,8 @@ namespace CampusPulse.Editor
             float h=floors*3.5f;
             LocalBox(parent,"Masonry core",offset+new Vector3(0,h/2+.5f,0),new Vector3(w,h,d),stone);
             LocalBox(parent,"Roof surface",offset+new Vector3(0,h+.9f,0),new Vector3(w-.6f,.12f,d-.6f),roof);
+            LocalBox(parent,"Sedum green roof",offset+new Vector3(0,h+.96f,0),new Vector3(w-2.2f,.12f,d-2.2f),greenRoof);
+            LocalBox(parent,"Roof skylight",offset+new Vector3(0,h+1.1f,0),new Vector3(w*.35f,.22f,2.2f),glass);
             for(int level=0;level<=floors;level++)
                 LocalBox(parent,"Floor band",offset+new Vector3(0,.7f+level*3.5f,0),new Vector3(w+.35f,.28f,d+.35f),trim);
             for(int side=-1;side<=1;side+=2)
@@ -146,7 +156,7 @@ namespace CampusPulse.Editor
                     {
                         float y=2.15f+floor*3.5f;
                         LocalBox(parent,"Window reveal",offset+new Vector3(x,y,side*(d/2+.035f)),new Vector3(2.55f,2.45f,.16f),metal);
-                        LocalBox(parent,"Recessed glazing",offset+new Vector3(x,y,side*(d/2+.13f)),new Vector3(2.26f,2.17f,.06f),glass);
+                        LocalBox(parent,"Recessed glazing",offset+new Vector3(x,y,side*(d/2+.13f)),new Vector3(2.26f,2.17f,.06f),warmGlazing);
                         LocalBox(parent,"Mullion",offset+new Vector3(x,y,side*(d/2+.19f)),new Vector3(.075f,2.3f,.12f),trim);
                     }
                     LocalBox(parent,"Solar shading fin",offset+new Vector3(x-1.45f,h/2+.5f,side*(d/2+.4f)),new Vector3(.2f,h,.9f),trim);
@@ -155,7 +165,7 @@ namespace CampusPulse.Editor
                 for(int b=0;b<sideBays;b++) for(int floor=0;floor<floors;floor++)
                 {
                     float z=-d/2+(b+.5f)*d/sideBays;
-                    LocalBox(parent,"Side glazing",offset+new Vector3(side*(w/2+.07f),2.15f+floor*3.5f,z),new Vector3(.16f,2.2f,2.15f),glass);
+                    LocalBox(parent,"Side glazing",offset+new Vector3(side*(w/2+.07f),2.15f+floor*3.5f,z),new Vector3(.16f,2.2f,2.15f),warmGlazing);
                     LocalBox(parent,"Side fin",offset+new Vector3(side*(w/2+.3f),2.15f+floor*3.5f,z-1.3f),new Vector3(.7f,3.1f,.18f),trim);
                 }
                 LocalBox(parent,"Roof parapet",offset+new Vector3(0,h+.9f,side*d/2),new Vector3(w+.3f,.7f,.3f),trim);
@@ -225,6 +235,22 @@ namespace CampusPulse.Editor
             Box("Entrance gate right",new Vector3(12,2,-57),new Vector3(2,4,2),stone,root);
             Box("Entrance lintel",new Vector3(0,4.3f,-57),new Vector3(26,.8f,1.4f),metal,root);
             Sign(root,"C A M P U S   P U L S E   /   2 0 3 0",new Vector3(0,4.35f,-57.8f),.17f,Color.white,true);
+        }
+        static void ReflectionPond(Transform parent, Vector3 p, float w, float d)
+        {
+            var pond = new GameObject("Central reflection pond").transform; pond.SetParent(parent, false); pond.position = p;
+            LocalBox(pond, "Basin rim", new Vector3(0, .2f, 0), new Vector3(w + 1.2f, .4f, d + 1.2f), trim);
+            LocalBox(pond, "Basin interior", new Vector3(0, .05f, 0), new Vector3(w, .1f, d), stone);
+            LocalBox(pond, "Water surface", new Vector3(0, .28f, 0), new Vector3(w - .2f, .05f, d - .2f), pondWater);
+            for (int i = -1; i <= 1; i++)
+            {
+                var spoutPos = new Vector3(i * (w * .28f), .32f, 0);
+                Shape(PrimitiveType.Cylinder, "Fountain nozzle " + i, pond, spoutPos, new Vector3(.4f, .2f, .4f), metal);
+                var jet = Shape(PrimitiveType.Cylinder, "Fountain jet " + i, pond, spoutPos + Vector3.up * 1.1f, new Vector3(.25f, 2.2f, .25f), aqua);
+                jet.GetComponent<Renderer>().sharedMaterial = aqua;
+            }
+            for (int s = -2; s <= 2; s++)
+                LocalBox(pond, "Stepping stone " + s, new Vector3(s * 1.8f, .31f, -d * .25f), new Vector3(1.2f, .12f, 1.2f), trim);
         }
         static void Gardens()
         {

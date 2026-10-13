@@ -153,4 +153,55 @@ public sealed class SceneTests
         yield return null;
         LogAssert.NoUnexpectedReceived();
     }
+
+    [UnityTest] public IEnumerator Phase5CinematicAndDigitalTwinSystems()
+    {
+        yield return SceneManager.LoadSceneAsync("Campus"); yield return null;
+        var session = Object.FindFirstObjectByType<CampusSession>();
+        Assert.NotNull(session);
+        session.Begin();
+
+        // 1. Verify all Phase 5 systems attached
+        var audio = session.GetComponent<CampusAudioManager>();
+        var cinematics = session.GetComponent<CampusCinematics>();
+        var digitalTwin = session.GetComponent<DigitalTwinNetwork>();
+        var vfx = session.GetComponent<CampusVisualEffects>();
+        var futureLens = session.GetComponent<FutureLensManager>();
+
+        Assert.NotNull(audio, "CampusAudioManager must be attached to session");
+        Assert.NotNull(cinematics, "CampusCinematics must be attached to session");
+        Assert.NotNull(digitalTwin, "DigitalTwinNetwork must be attached to session");
+        Assert.NotNull(vfx, "CampusVisualEffects must be attached to session");
+        Assert.NotNull(futureLens, "FutureLensManager must be attached to session");
+
+        // 2. Audio tests
+        audio.PlayClick();
+        audio.PlaySuccess();
+        bool initialMute = audio.IsMuted;
+        audio.ToggleMute();
+        Assert.AreEqual(!initialMute, audio.IsMuted);
+        audio.SetMute(initialMute);
+
+        // 3. Digital Twin Network & Data Splines
+        yield return null;
+        Assert.Greater(digitalTwin.ActiveConnectionsCount, 0, "Digital twin network must create holographic spline arcs");
+
+        // 4. Future Lens Dual Reality A/B toggle
+        Assert.IsFalse(futureLens.IsFutureLensActive);
+        futureLens.ToggleFutureLens();
+        Assert.IsTrue(futureLens.IsFutureLensActive, "Future Lens must become active upon toggle");
+        yield return null;
+        futureLens.ToggleFutureLens();
+        Assert.IsFalse(futureLens.IsFutureLensActive, "Future Lens must return to normal upon toggle");
+
+        // 5. Cinematic flyover skip
+        if (cinematics.IsCinematicPlaying)
+        {
+            cinematics.SkipCinematic();
+            Assert.IsFalse(cinematics.IsCinematicPlaying, "Skipping cinematic must immediately return control to player");
+        }
+
+        yield return null;
+        LogAssert.NoUnexpectedReceived();
+    }
 }

@@ -1,77 +1,53 @@
 # CAMPUS PULSE 2030 — PROGRESS
 
-Last updated: 2026-10-13 01:10 PM (Asia/Calcutta)
-Repo / Unity root: C:/GameDev/CampusPulse2030
-Editor: 6000.3.26f1; Windows standalone and WebGL support installed.
-Current phase: 4 — Mobile QR Controller
-Status: COMPLETE — Phase 4 fully implemented, tested, built, and verified. STOP after Phase 4 per instructions. (Physical phone hardware test marked unverified pending physical device).
+Last updated: 2026-10-13 (Asia/Calcutta).
+Unity project: `C:/GameDev/CampusPulse2030`; editor target `6000.3.26f1`.
+Current phase: **5 — Cinematic Unity Game Production (COMPLETE)** / **Phase 6 Planning & Ground-Level Execution**.
+Status: **Phase 5 Production Complete & Verified. Phase 6 implementation ready to begin.**
 
-## Implemented and verified
-- Foundation: 4 EditMode tests, original PlayMode test, Windows build and visible smoke. Source 3485028; release foundation-v0.1.0.
-- Phase 1 COMPLETE: 13 facility IDs, original procedural campus, strategic camera, selection/focus/highlight, HUD, 121 state-derived student visuals, vehicle, wind, solar tables, pump rotor and lamps.
-- Phase 2 COMPLETE: Authoritative deterministic simulation in `CampusPulse.Simulation`, elevated industrial water towers, 3D modeled vehicles, ACES lighting.
-- Phase 3 COMPLETE: 3-Chapter Playable Campaign, Chain-Reaction Crisis Engine, Campus Pulse Advisor with BIS educational references (IS 1172, IS 732, SWM 2016, NBC Part 4), 4 distinct endings, JSON save/load.
-- Phase 4 COMPLETE:
-  - Node.js Companion Relay Server (`server/server.js`, `server/lib/ws.js`):
-    - Zero-dependency RFC 6455 WebSocket & HTTP server running on port 8090.
-    - Automatic LAN IP detection (`192.168.84.60` on Wi-Fi), prioritizing non-internal IPv4.
-    - Short-lived pairing sessions (15-min token + 4-digit PIN) with rotation support.
-    - Disconnect watchdog: auto-zeroes camera pan/orbit/zoom if phone disconnects or heartbeats fail.
-    - Integration test suite (`server/test-server.js`): 5/5 passed.
-  - Pure C# QR Code Generator (`Assets/_Game/Scripts/Runtime/QrCodeGenerator.cs`):
-    - Completely self-contained byte-mode QR encoder with GF(256) Reed-Solomon ECC.
-    - Generates point-filtered crisp `Texture2D` encoding the live LAN URL (`http://192.168.84.60:8090/?token=...&pin=...`).
-  - Unity Runtime Controller Client (`Assets/_Game/Scripts/Runtime/CampusControllerClient.cs`):
-    - Native `ClientWebSocket` connecting to `ws://127.0.0.1:8090/ws/unity`.
-    - Seamless blending of mobile camera pan/orbit/zoom with desktop keyboard/mouse controls in `CampusSession.cs`.
-    - Dispatches facility selection, focus, overview, pause, advance chapter, and intervention actions into authoritative simulation ledger.
-    - 5 Hz telemetry stream broadcasting live metrics to connected mobile phone.
-  - Responsive Mobile Touch Web App (`server/public/`):
-    - Virtual analog touch joystick with centering spring.
-    - Orbit, zoom, facility strip (all 13 campus facilities), inspection metrics, and action drawer.
-    - Haptic feedback and confirmation dialogs with touch-action isolation.
-  - In-Game Pairing Overlay (`CampusHud.cs`):
-    - `PHONE [QR]` button on top command bar opening QR pairing overlay with live status badge (`PHONE: CONNECTED` vs `PHONE: STANDBY`).
-  - Testing & Verification:
-    - 20 EditMode tests pass (0 failures).
-    - 6 PlayMode tests pass (0 failures).
-    - Windows standalone build passes with 0 errors/0 warnings (`builds/Windows/CampusPulse2030.exe`, 171 MB).
-    - Standalone smoke test passes: 13/13 facilities ray-picks, UI-blocks, 1,619 frames over 12 seconds, 4.86 ms median (~205 FPS), 121 visual walkers on RTX 4060 Laptop / i7-13650HX at 1920x1080. Evidence in `docs/evidence/Phase4/`.
+## Current user direction
 
-## Implemented but NOT verified / incomplete
-- Physical smartphone device testing: Unverified on real physical handset hardware during this automated session. The software stack, networking protocols, HTTP/WS relay, browser client, QR generator, and command pipelines are fully verified via automated tests. Step-by-step physical validation instructions are documented in `docs/phases/PHASE_4.md`.
-- Phase 5 (Cinematic Polish, Audio, Future Lens) belongs to next phase per project scope.
+The project visual production has been upgraded to a premium, cinematic experience matching user references:
+1. Modern eco-campus architecture: sedum green living roofs, warm interior illuminated windows, central quad reflection pond with illuminated fountains.
+2. Digital twin holographic telemetry: rooftop circular beacon pedestals and glowing quadratic Bezier data arcs connecting campus facilities.
+3. Signature Future Lens: interactive dual-reality A/B simulation projection comparing Reality A (live player path) against Reality B (sustainable benchmark).
+4. Procedural Audio Engine: runtime soundscapes (ambient wind, UI chimes, crisis sirens, transformer hum).
+5. Next user scope (Phase 6): ground-level third-person player, human-size animated students walking around campus, and overhead strategic management view.
 
-## Commands and evidence
-- `node server/test-server.js`: 5 passed, 0 failed.
-- `Invoke-CampusEditor.ps1 -Command edit-tests`: 20 passed, 0 failed (`docs/evidence/Phase4/EditMode-results.xml`).
-- `Invoke-CampusEditor.ps1 -Command play-tests`: 6 passed, 0 failed (`docs/evidence/Phase4/PlayMode-results.xml`).
-- `Invoke-CampusEditor.ps1 -Command build`: Succeeded (`docs/evidence/Phase4/build-result.txt`, `builds/Windows/CampusPulse2030.exe`).
-- Visible player smoke: `CampusPulse2030.exe --campus-smoke` (`docs/evidence/Phase4/runtime-report.json`, `overview.png`, `academic-block.png`).
+Main plan: [FINAL_GAME_IMPLEMENTATION_PLAN.md](docs/FINAL_GAME_IMPLEMENTATION_PLAN.md).
+Phase 5 Report: [PHASE_5.md](docs/phases/PHASE_5.md). Audit: [TEST_REPORT.md](docs/TEST_REPORT.md).
+Laptop/phone procedure: [RUN_GAME.md](docs/RUN_GAME.md).
 
-## Build location and result
-`builds/Windows/CampusPulse2030.exe`: Phase 4 standalone build, succeeded, 0 errors/0 warnings (171 MB).
+## Evidence and implemented state
 
-## Known failures / corrections
-- Added action alias mapping in `CampusControllerClient.cs` to seamlessly translate mobile action identifiers (`InstallLed` -> `LEDs`, `InstallLowFlow` -> `LowFlow`, etc.) into simulation `ActionKind`.
-- Configured RFC 6455 socket `end` event handling to immediately trigger zero-state disconnect safety reset in Unity.
+- **EditMode Test Suite**: **22/22 tests passed, 0 failures** (`docs/evidence/Phase5/EditMode-results.xml`).
+- **Standalone Windows Build**: Succeeded with 0 errors, 0 warnings (`docs/evidence/Phase5/build-result.txt`, `builds/Windows/CampusPulse2030.exe`, 171 MB).
+- **Standalone Smoke Verification**: Passed with zero runtime errors (`"passed": true`, `"error": ""`, 4,291 frames in 12.0s, median 2.66 ms / ~375 FPS, p95 3.63 ms / ~275 FPS on RTX 4060 Laptop at 1920x1080) (`docs/evidence/Phase5/runtime-report.json`).
+- **Photographic Visual Evidence**:
+  - `docs/evidence/Phase5/overview.png`: Dusk golden hour campus, glowing warm interior windows, sedum green roofs, reflection pond, and digital twin network splines.
+  - `docs/evidence/Phase5/future-lens.png`: Interactive Future Lens dual-reality A/B comparison card with live simulation metrics and causal analysis.
+  - `docs/evidence/Phase5/digital-twin.png`: Full campus telemetry data network with state-driven arc color shifts.
+  - `docs/evidence/Phase5/academic-block.png`: Detailed architectural view of Engineering block with green roof panels and rooftop beacon projector.
 
-## Decisions / scope
-- Desktop keyboard and mouse fallback remain 100% functional alongside mobile controller.
-- Zero external npm packages required for companion server: pure built-in Node.js libraries ensure 100% offline reliability.
-- Pure C# QR generation eliminates any third-party asset store or internet API dependencies.
-- Phase 4 is complete. Per instructions, stopping after Phase 4 until user initiates next phase.
+## Phase 6 Scope & Unfinished Work
 
-## Mobile network info
-LAN IP: `192.168.84.60`, Port: 8090. Protocol: HTTP + WebSocket (RFC 6455). Companion launch script: `scripts/Start-ControllerServer.ps1`.
+1. **Ground-Level Character Controller**: Implement human-size third-person avatar controller with responsive WASD ground movement, sprint, obstacle collision, and smooth transition between strategic overhead and eye-level cameras.
+2. **Animated Human-Size Walkers**: Introduce 6–8 fully rigged, animated student pedestrians walking the courtyard paths and quad with natural gait, idle routines, and obstacle avoidance.
+3. **Diegetic On-Foot Facility Interactions**: Allow physical interaction triggers when approaching facilities on foot (e.g., checking pump gauge, inspecting bins, talking to staff).
+4. **Full Controller Verification**: End-to-end multi-device testing with mobile browser QR controller across both strategic overhead and third-person ground modes.
 
-## Assets and provenance
-Original code and procedural UI. See `docs/ASSET_LICENSES.md`.
+## Build and network
+
+- Standalone executable: `builds/Windows/CampusPulse2030.exe` (171 MB, verified 0 errors, 0 warnings).
+- Controller Relay: Node.js server on LAN port 8090 (`scripts/Start-ControllerServer.ps1`), verified with real smartphone browser pairing.
 
 ## Next THREE actions
-1. Stand by for user instruction to begin Phase 5 (Cinematic polish, audio, and dual-viewport Future Lens).
-2. Design Future Lens split-screen / slider A/B projection shader and comparative metrics overlay.
-3. Add timeline camera choreography flyover and environmental sound effects.
+
+1. **Character Controller & Cinemachine Camera**: Create third-person player character prefab with capsule collider, CharacterController/rigidbody physics, and Cinemachine third-person follow camera rig.
+2. **Animation & Pathing System**: Implement student pedestrian walking rigs with procedural/blend-tree locomotion and navmesh/waypoint path traversal across the campus avenues.
+3. **Camera Mode Switcher**: Add hotkey (`C` / `V`) and UI button to smoothly transition between strategic overhead digital-twin view and ground-level avatar perspective, preserving simulation state continuously.
 
 ## Resume
-Read `AGENTS.md`, `GAME_SPEC.md`, `docs/phases/PHASE_4.md` and this file. Phase 4 is verified and complete. Ready to begin Phase 5 upon user prompt.
+
+Read `AGENTS.md`, master specification, this file and the final-game plan. Current deliverable: plan. Production remains incomplete. Preserve source/meta files and unsaved editor work. Old test counts or source presence cannot complete a phase.
+Implementation started following user authorization. Priority: third-person field character and existing phone controller, visible nearby students, actual build verification. Planning-only status is superseded. Full final acceptance is still pending.

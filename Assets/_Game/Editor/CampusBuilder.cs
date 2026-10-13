@@ -41,20 +41,26 @@ namespace CampusPulse.Editor
         public static void BeginScene()
         {
             for (int i=0;i<SceneManager.sceneCount;i++)
-                if (SceneManager.GetSceneAt(i).isDirty) throw new InvalidOperationException("Save your dirty scene before running Campus generation.");
+            {
+                var s = SceneManager.GetSceneAt(i);
+                if (s.isDirty)
+                {
+                    throw new InvalidOperationException("Save your dirty scene before running Campus generation: " + s.name);
+                }
+            }
             Directory.CreateDirectory("Assets/_Game/Scenes"); Directory.CreateDirectory("Assets/_Game/Art/Materials");
             materials.Clear();
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(.52f, .66f, .82f);
-            RenderSettings.ambientEquatorColor = new Color(.74f, .62f, .50f);
-            RenderSettings.ambientGroundColor = new Color(.26f, .22f, .18f);
+            RenderSettings.ambientSkyColor = new Color(.24f, .38f, .58f);
+            RenderSettings.ambientEquatorColor = new Color(.68f, .54f, .44f);
+            RenderSettings.ambientGroundColor = new Color(.18f, .16f, .14f);
             RenderSettings.fog = true; RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(.78f, .74f, .68f);
-            RenderSettings.fogStartDistance = 120f; RenderSettings.fogEndDistance = 460f;
-            var sun = new GameObject("RDR2 Golden hour sun").AddComponent<Light>(); sun.type = LightType.Directional;
-            sun.transform.rotation = Quaternion.Euler(34, -46, 0); sun.color = new Color(1f, .89f, .72f);
-            sun.intensity = 2.45f; sun.shadows = LightShadows.Soft; RenderSettings.sun = sun;
+            RenderSettings.fogColor = new Color(.32f, .38f, .48f);
+            RenderSettings.fogStartDistance = 90f; RenderSettings.fogEndDistance = 450f;
+            var sun = new GameObject("Dusk Golden Hour Sun").AddComponent<Light>(); sun.type = LightType.Directional;
+            sun.transform.rotation = Quaternion.Euler(22, -45, 0); sun.color = new Color(1f, .82f, .65f);
+            sun.intensity = 2.2f; sun.shadows = LightShadows.Soft; RenderSettings.sun = sun;
             var volume = new GameObject("Campus atmosphere").AddComponent<Volume>(); volume.isGlobal = true;
             var profilePath = "Assets/_Game/Art/CampusVolume.asset";
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(profilePath);
@@ -62,10 +68,15 @@ namespace CampusPulse.Editor
             {
                 profile = ScriptableObject.CreateInstance<VolumeProfile>(); AssetDatabase.CreateAsset(profile, profilePath);
                 var tone = profile.Add<Tonemapping>(true); tone.mode.Override(TonemappingMode.ACES); AssetDatabase.AddObjectToAsset(tone, profile);
-                var bloom = profile.Add<Bloom>(true); bloom.intensity.Override(.35f); bloom.threshold.Override(1.08f); AssetDatabase.AddObjectToAsset(bloom, profile);
-                var adjust = profile.Add<ColorAdjustments>(true); adjust.postExposure.Override(.18f); adjust.contrast.Override(18f); adjust.saturation.Override(4f);
-                adjust.colorFilter.Override(new Color(1f, .97f, .93f)); AssetDatabase.AddObjectToAsset(adjust, profile);
+                var bloom = profile.Add<Bloom>(true); bloom.intensity.Override(.65f); bloom.threshold.Override(.95f); AssetDatabase.AddObjectToAsset(bloom, profile);
+                var adjust = profile.Add<ColorAdjustments>(true); adjust.postExposure.Override(.15f); adjust.contrast.Override(20f); adjust.saturation.Override(6f);
+                adjust.colorFilter.Override(new Color(1f, .97f, .94f)); AssetDatabase.AddObjectToAsset(adjust, profile);
                 var vig = profile.Add<Vignette>(true); vig.intensity.Override(.22f); vig.smoothness.Override(.4f); AssetDatabase.AddObjectToAsset(vig, profile);
+            }
+            else
+            {
+                if (profile.TryGet<Bloom>(out var b)) { b.intensity.Override(.65f); b.threshold.Override(.95f); }
+                if (profile.TryGet<ColorAdjustments>(out var c)) { c.contrast.Override(20f); c.saturation.Override(6f); }
             }
             volume.sharedProfile = profile;
         }
@@ -73,7 +84,7 @@ namespace CampusPulse.Editor
         {
             var cam = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener), typeof(CinemachineBrain)); cam.tag = "MainCamera";
             var camera = cam.GetComponent<Camera>(); camera.nearClipPlane = .3f; camera.farClipPlane = 650;
-            camera.backgroundColor = new Color(.63f,.76f,.84f); camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(.18f,.28f,.42f); camera.clearFlags = CameraClearFlags.SolidColor;
             camera.GetUniversalAdditionalCameraData().renderPostProcessing = true;
             var virtualCamera = new GameObject("Strategic Cinemachine Camera").AddComponent<CinemachineCamera>();
             virtualCamera.Lens.FieldOfView = 45;
@@ -84,6 +95,14 @@ namespace CampusPulse.Editor
             var session = new GameObject("Campus session").AddComponent<CampusSession>();
             session.Facilities = facilities.ToArray(); session.WorldCamera = camera; session.Rig = rig;
             var hud = session.gameObject.AddComponent<CampusHud>(); hud.Session = session; session.Hud = hud;
+
+            // Phase 5 Cinematic & Production Systems
+            session.gameObject.AddComponent<CampusAudioManager>();
+            session.gameObject.AddComponent<CampusCinematics>();
+            session.gameObject.AddComponent<DigitalTwinNetwork>();
+            session.gameObject.AddComponent<CampusVisualEffects>();
+            session.gameObject.AddComponent<FutureLensManager>();
+
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), ScenePath);
             EditorBuildSettings.scenes = new[] {new EditorBuildSettingsScene(ScenePath, true)};
             AssetDatabase.SaveAssets(); AssetDatabase.Refresh();

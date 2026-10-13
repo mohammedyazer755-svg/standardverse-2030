@@ -1,6 +1,6 @@
 # Campus Pulse 2030 — Implementation Plan
 
-Prepared: 13 October 2026. Status: proposed plan; implementation has not started under this task.
+Prepared: 13 October 2026. Historical baseline plan: its starting-point observations and phase-specific stopping instructions are retained for context. Current scope and execution order are in [FINAL_GAME_IMPLEMENTATION_PLAN.md](FINAL_GAME_IMPLEMENTATION_PLAN.md), following the user's third-person + overhead decision. Use `progress.md` for actual implementation and verification status.
 
 ## 1. Outcome and planning basis
 

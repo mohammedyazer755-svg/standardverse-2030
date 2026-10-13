@@ -162,6 +162,7 @@ wss.on('connection', (ws, req) => {
     if (pathname === '/ws/unity') {
         console.log('[WS] Unity client connected.');
         unityClient = ws;
+        ws.on('error', (err) => console.warn('[WS] Unity socket error:', err.message));
 
         // Inform Unity about current session info
         ws.send({
@@ -195,6 +196,7 @@ wss.on('connection', (ws, req) => {
 
     if (pathname === '/ws/phone') {
         console.log('[WS] Phone connection attempt...');
+        ws.on('error', (err) => console.warn('[WS] Phone socket error:', err.message));
         let isPaired = false;
         const queryToken = parsed.query.token;
         const queryPin = parsed.query.pin;
@@ -333,6 +335,13 @@ setInterval(() => {
         }
     }
 }, 1000);
+
+process.on('uncaughtException', (err) => {
+    console.warn('[Server] Uncaught exception caught gracefully:', err.message);
+});
+process.on('unhandledRejection', (reason) => {
+    console.warn('[Server] Unhandled rejection caught gracefully:', reason);
+});
 
 server.listen(PORT, '0.0.0.0', () => {
     const lanIp = detectLanIp();
