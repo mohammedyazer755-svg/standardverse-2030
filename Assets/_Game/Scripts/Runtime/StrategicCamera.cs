@@ -42,7 +42,7 @@ namespace CampusPulse
             desiredTarget += (right * command.Pan.x + forward * command.Pan.y) * delta * desiredDistance * .5f;
             desiredTarget = new Vector3(Mathf.Clamp(desiredTarget.x, -Bounds.x, Bounds.x), Mathf.Clamp(desiredTarget.y, 0, 12), Mathf.Clamp(desiredTarget.z, -Bounds.y, Bounds.y));
             desiredYaw += command.Orbit * delta * 65;
-            desiredDistance = Mathf.Clamp(desiredDistance - command.Zoom * 6, 30, 250);
+            desiredDistance = Mathf.Clamp(desiredDistance - command.Zoom * 6, 30, 320);
         }
         void LateUpdate()
         {

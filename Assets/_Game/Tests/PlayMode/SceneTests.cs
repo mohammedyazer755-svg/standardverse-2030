@@ -27,10 +27,12 @@ public sealed class SceneTests
         session.Rig.Apply(new CameraCommand {Pan = new Vector2(10000,10000),Zoom=10000},1);
         yield return new WaitForSeconds(1);
         Assert.LessOrEqual(session.Rig.Distance,171); Assert.GreaterOrEqual(session.Rig.Distance,29);
-        Assert.LessOrEqual(Mathf.Abs(session.Rig.Target.x),76);
+        Assert.LessOrEqual(Mathf.Abs(session.Rig.Target.x),session.Rig.Bounds.x+1);
         Assert.IsNull(session.Pick(Vector2.zero,true));
         var uiHits = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = new Vector2(Screen.width*.5f,Screen.height-50) },uiHits);
+        var header=(RectTransform)session.Hud.transform.Find("Campus Interface/Header");
+        var headerPixel=RectTransformUtility.WorldToScreenPoint(null,header.TransformPoint(header.rect.center));
+        EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = headerPixel },uiHits);
         Assert.Greater(uiHits.Count,0,"Header must receive UI raycasts");
         LogAssert.NoUnexpectedReceived();
     }
@@ -52,6 +54,18 @@ public sealed class SceneTests
         Assert.AreEqual(paused,walker.position);
         var ids=new HashSet<string>();
         foreach(var f in session.Facilities) { Assert.IsTrue(ids.Add(f.Id)); Assert.IsTrue(session.State.Facilities.ContainsKey(f.Id)); }
+        LogAssert.NoUnexpectedReceived();
+    }
+
+    [UnityTest] public IEnumerator FullCampusHasEveryRequiredFacility()
+    {
+        yield return SceneManager.LoadSceneAsync("Campus"); yield return null;
+        var session=Object.FindFirstObjectByType<CampusSession>();
+        foreach(var id in new[]{"academic","research","library","administration","canteen","auditorium","hostel","water","power","solar","recycling","parking","garden"})
+            Assert.IsTrue(session.State.Facilities.ContainsKey(id),"Missing facility: "+id);
+        Assert.AreEqual(13,session.Facilities.Length);
+        var life=Object.FindFirstObjectByType<CampusLife>();
+        Assert.Greater(life.SolarTables.Length,0); Assert.Greater(life.Rotors.Length,0); Assert.NotNull(life.Vehicle);
         LogAssert.NoUnexpectedReceived();
     }
 }

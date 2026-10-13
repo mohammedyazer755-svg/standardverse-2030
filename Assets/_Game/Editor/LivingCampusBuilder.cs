@@ -65,11 +65,14 @@ namespace CampusPulse.Editor
             if(full) { Utilities(); Parking(); Gardens(); }
             else Gardens();
             CombineStatic(groundRoot,"landscape");
-            Complete(facilities,full?210:130);
+            Complete(facilities,full?290:130);
             var session=Object.FindFirstObjectByType<CampusSession>();
-            session.Rig.Bounds=new Vector2(93,70); session.Rig.Overview=full?new Vector3(0,0,12):new Vector3(0,0,5);
+            session.Rig.Bounds=new Vector2(93,70); session.Rig.Overview=full?new Vector3(0,0,-4):new Vector3(0,0,5);
             var life=new GameObject("Living campus presentation").AddComponent<CampusLife>(); life.Session=session;
             life.WalkerPrefab=WalkerPrefab(); life.Trees=trees.ToArray(); life.Rotors=rotors.ToArray(); life.Lamps=lamps.ToArray();
+            var solarTables=new List<Transform>();
+            foreach(var t in Object.FindObjectsByType<Transform>(FindObjectsSortMode.None)) if(t.name=="Solar table") solarTables.Add(t);
+            life.SolarTables=solarTables.ToArray();
             life.OutfitMaterials=new[]{Material("Student teal",new Color(.12f,.43f,.48f)),Material("Student ochre",new Color(.65f,.37f,.12f)),Material("Student blue",new Color(.19f,.27f,.44f)),Material("Student burgundy",new Color(.4f,.16f,.19f))};
             life.Vehicle=ServiceVehicle(); life.VehicleRoute=new[]{new Vector3(-98,.2f,-48),new Vector3(98,.2f,-48),new Vector3(98,.2f,75),new Vector3(-98,.2f,75)};
             life.Vehicle.position=life.VehicleRoute[0];
@@ -106,6 +109,7 @@ namespace CampusPulse.Editor
             for(int i=0;i<3;i++) LocalBox(visual,"Entry stair",new Vector3(0,.12f+i*.11f,-depth*.5f-4+i*.65f),new Vector3(8,.18f,1.6f),trim);
             Sign(root.transform,name.ToUpperInvariant(),new Vector3(0,4.8f,-depth*.5f-.7f),.18f,Color.white);
             CombineStatic(visual,id);
+            f.ActivityIndicator=LocalBox(root.transform,"Service status glow",new Vector3(0,4.45f,-depth*.5f-1),new Vector3(2,.18f,.15f),aqua).GetComponent<Renderer>();
             float boundDepth=depth+(wings?12:0); float centerZ=wings?-6:0;
             var collider=root.AddComponent<BoxCollider>(); collider.center=new Vector3(0,height*.5f,centerZ); collider.size=new Vector3(width,height,boundDepth);
             f.FocusOffset=new Vector3(0,2,centerZ); f.FocusDistance=Mathf.Max(65,width*2.3f);
@@ -123,7 +127,7 @@ namespace CampusPulse.Editor
         {
             float h=floors*3.5f;
             LocalBox(parent,"Masonry core",offset+new Vector3(0,h/2+.5f,0),new Vector3(w,h,d),stone);
-            LocalBox(parent,"Roof surface",offset+new Vector3(0,h+.57f,0),new Vector3(w-.6f,.18f,d-.6f),roof);
+            LocalBox(parent,"Roof surface",offset+new Vector3(0,h+.9f,0),new Vector3(w-.6f,.12f,d-.6f),roof);
             for(int level=0;level<=floors;level++)
                 LocalBox(parent,"Floor band",offset+new Vector3(0,.7f+level*3.5f,0),new Vector3(w+.35f,.28f,d+.35f),trim);
             for(int side=-1;side<=1;side+=2)
@@ -210,11 +214,17 @@ namespace CampusPulse.Editor
             var root=new GameObject("Courtyard gardens").transform;
             for(int i=0;i<5;i++)
             {
-                var p=new Vector3(-64+i*10,0,-30);
+                var p=new Vector3(-84+i*7,0,53);
                 Tree(p,5.5f+(i%2)); Bench(p+new Vector3(0,0,-4),root);
                 LocalBox(root,"Garden bed",p+new Vector3(0,.15f,0),new Vector3(6,.3f,5),leavesLight);
             }
             CombineStatic(root,"gardens");
+            if(facilities.Count>3)
+            {
+                var garden=Utility("garden","Reflection Garden","Shaded outdoor space and an alternate student gathering zone.",new Vector3(-70,0,53),37,22);
+                garden.Capacity=240; garden.InitialOccupants=100;
+                garden.Water=5; garden.Power=1; garden.Waste=5;
+            }
         }
         static void Tree(Vector3 p,float h)
         {
@@ -276,12 +286,107 @@ namespace CampusPulse.Editor
             }
             return root;
         }
-        // Utility and parking expansion is supplied after benchmark review.
-        static void Utilities() { }
-        static void Parking() { }
+        static void Utilities()
+        {
+            var water=Utility("water","Water & Pump House","Two storage tanks and electrically driven pumping.",new Vector3(-66,0,-71),29,20);
+            var waterMat=Material("Reservoir water",new Color(.05f,.43f,.55f),.45f,.92f);
+            for(int i=-1;i<=1;i+=2)
+            {
+                var tank=new GameObject("Tank "+i,typeof(MeshFilter),typeof(MeshRenderer)); tank.transform.SetParent(water.transform,false); tank.transform.localPosition=new Vector3(i*7,0,2);
+                tank.GetComponent<MeshFilter>().sharedMesh=TankMesh(); tank.GetComponent<Renderer>().sharedMaterial=trim;
+                var surface=Shape(PrimitiveType.Cylinder,"Stored water",tank.transform,new Vector3(0,3.3f,0),new Vector3(7.3f,.06f,7.3f),waterMat);
+                if(i<0) water.WaterSurface=surface.transform;
+                LocalBox(water.transform,"Tank gauge",new Vector3(i*7,2.8f,-2.1f),new Vector3(.35f,4.7f,.16f),aqua);
+                for(int rung=0;rung<8;rung++) LocalBox(water.transform,"Service ladder",new Vector3(i*7+3.8f,.5f+rung*.65f,2),new Vector3(.6f,.08f,.13f),metal);
+            }
+            LocalBox(water.transform,"Pump house",new Vector3(0,1.5f,-6.4f),new Vector3(7,3,4),stone);
+            LocalBox(water.transform,"Pump roof",new Vector3(0,3.2f,-6.4f),new Vector3(7.5f,.3f,4.5f),metal);
+            LocalBox(water.transform,"Manifold",new Vector3(0,.7f,-2),new Vector3(15,.35f,.35f),aqua);
+            var rotor=Shape(PrimitiveType.Cylinder,"Pump status rotor",water.transform,new Vector3(0,1.7f,-8.5f),new Vector3(1.1f,.1f,1.1f),aqua);
+            rotor.transform.localRotation=Quaternion.Euler(90,0,0); rotors.Add(rotor.transform);
+            LocalBox(rotor.transform,"Rotor needle",Vector3.zero,new Vector3(.13f,.3f,.9f),white);
+            var power=Utility("power","Campus Substation","Grid distribution, building services and limited backup supply.",new Vector3(-24,0,-71),27,20);
+            for(int i=-1;i<=1;i+=2)
+            {
+                LocalBox(power.transform,"Transformer",new Vector3(i*6,2,0),new Vector3(5,4,4),metal);
+                for(int j=0;j<8;j++) LocalBox(power.transform,"Cooling fin",new Vector3(i*6-2.7f+j*.75f,2,-2.3f),new Vector3(.18f,3.5f,1),trim);
+                for(int j=-1;j<=1;j++) Shape(PrimitiveType.Cylinder,"Insulator",power.transform,new Vector3(i*6+j*1.4f,4.6f,0),new Vector3(.35f,.65f,.35f),stone);
+            }
+            var solar=Utility("solar","Solar Garden","A campus photovoltaic array. Generation follows game daylight.",new Vector3(20,0,-71),32,20);
+            var cell=Material("Photovoltaic cells",new Color(.035f,.11f,.21f),.6f,.8f);
+            for(int row=0;row<3;row++) for(int col=0;col<5;col++)
+            {
+                var pivot=new GameObject("Solar table").transform; pivot.SetParent(solar.transform,false); pivot.localPosition=new Vector3(-12+col*6,2,-6+row*6); pivot.localRotation=Quaternion.Euler(-22,0,0);
+                LocalBox(pivot,"Panel frame",Vector3.zero,new Vector3(5.4f,.15f,3.8f),trim);
+                LocalBox(pivot,"PV surface",new Vector3(0,.1f,0),new Vector3(5.2f,.06f,3.6f),cell);
+                for(int line=-2;line<=2;line++) LocalBox(pivot,"Cell grid",new Vector3(line,.15f,0),new Vector3(.025f,.01f,3.6f),metal);
+                LocalBox(solar.transform,"Support",new Vector3(-12+col*6,1,-6+row*6),new Vector3(.2f,2,.2f),metal);
+            }
+            var waste=Utility("recycling","Recovery Yard","Segregated collection, recycling and tracked waste disposal.",new Vector3(69,0,-71),31,20);
+            var colors=new[]{new Color(.14f,.48f,.34f),new Color(.17f,.33f,.55f),new Color(.62f,.45f,.13f)};
+            for(int i=0;i<3;i++)
+            {
+                var m=Material("Collection bin "+i,colors[i]);
+                LocalBox(waste.transform,"Sorting container",new Vector3(-9+i*9,1.5f,0),new Vector3(7,3,5),m);
+                LocalBox(waste.transform,"Container lid",new Vector3(-9+i*9,3.1f,0),new Vector3(7.3f,.2f,5.3f),metal);
+            }
+            foreach(var f in new[]{water,power,solar,waste})
+            {
+                var root=new GameObject(f.Id+" access path").transform;
+                Box("Service path",new Vector3(f.transform.position.x,.15f,-57),new Vector3(4,.3f,16),paving,root);
+                CombineStatic(root,f.Id+"-access");
+                Sign(f.transform,f.DisplayName.ToUpperInvariant(),new Vector3(0,5,-10.3f),.16f,Color.white);
+            }
+        }
+        static FacilityView Utility(string id,string name,string purpose,Vector3 p,float w,float d)
+        {
+            var root=new GameObject(name); root.transform.position=p;
+            var f=root.AddComponent<FacilityView>(); f.Id=id; f.DisplayName=name; f.Purpose=purpose; f.Capacity=40; f.InitialOccupants=5; f.Water=1; f.Power=3; f.Waste=2; f.FocusDistance=70;
+            var c=root.AddComponent<BoxCollider>(); c.center=new Vector3(0,3,0); c.size=new Vector3(w,6,d);
+            if(id!="garden") LocalBox(root.transform,"Service apron",new Vector3(0,.08f,0),new Vector3(w+3,.16f,d+3),paving);
+            var marker=new GameObject("Selection").transform; marker.SetParent(root.transform,false);
+            LocalBox(marker,"Front",new Vector3(0,.27f,-d/2),new Vector3(w,.08f,.18f),aqua);
+            LocalBox(marker,"Back",new Vector3(0,.27f,d/2),new Vector3(w,.08f,.18f),aqua);
+            LocalBox(marker,"Left",new Vector3(-w/2,.27f,0),new Vector3(.18f,.08f,d),aqua);
+            LocalBox(marker,"Right",new Vector3(w/2,.27f,0),new Vector3(.18f,.08f,d),aqua);
+            CombineStatic(marker,id+"-selection"); f.Highlight=marker.GetComponentInChildren<Renderer>(); f.Highlight.gameObject.SetActive(false);
+            facilities.Add(f); return f;
+        }
+        static Mesh TankMesh()
+        {
+            const string path="Assets/_Game/Art/Meshes/HollowTank.asset";
+            var existing=AssetDatabase.LoadAssetAtPath<Mesh>(path); if(existing) return existing;
+            var vertices=new List<Vector3>(); var triangles=new List<int>(); const int n=48;
+            for(int i=0;i<=n;i++)
+            {
+                float a=i*Mathf.PI*2/n; var radial=new Vector3(Mathf.Cos(a),0,Mathf.Sin(a));
+                vertices.Add(radial*4); vertices.Add(radial*4+Vector3.up*5.5f); vertices.Add(radial*3.7f); vertices.Add(radial*3.7f+Vector3.up*5.5f);
+            }
+            for(int i=0;i<n;i++)
+            {
+                int v=i*4;
+                foreach(var q in new[]{new[]{v,v+1,v+5,v+4},new[]{v+2,v+6,v+7,v+3},new[]{v+1,v+3,v+7,v+5}})
+                    triangles.AddRange(new[]{q[0],q[1],q[2],q[0],q[2],q[3]});
+            }
+            var mesh=new Mesh{name="Hollow storage tank"}; mesh.SetVertices(vertices); mesh.SetTriangles(triangles,0); mesh.RecalculateNormals(); mesh.RecalculateBounds(); AssetDatabase.CreateAsset(mesh,path); return mesh;
+        }
+        static void Parking()
+        {
+            var parking=Utility("parking","Mobility Court","Parking, service access and a pedestrian corridor.",new Vector3(67,0,-30),42,23);
+            parking.Capacity=100; parking.InitialOccupants=15;
+            LocalBox(parking.transform,"Parking asphalt",new Vector3(0,.2f,0),new Vector3(41,.1f,22),road);
+            for(int i=0;i<12;i++)
+            {
+                float x=-18+i*3.3f;
+                LocalBox(parking.transform,"Bay line",new Vector3(x,.27f,5),new Vector3(.1f,.03f,8),white);
+                if(i%3==0) continue;
+                LocalBox(parking.transform,"Parked car body",new Vector3(x+1.5f,.8f,5),new Vector3(1.7f,1,3.4f),i%2==0?trim:metal);
+                LocalBox(parking.transform,"Parked car glass",new Vector3(x+1.5f,1.4f,5.2f),new Vector3(1.45f,.7f,1.8f),glass);
+            }
+        }
         static GameObject LocalBox(Transform parent,string name,Vector3 p,Vector3 size,Material material)
         {
-            var go=Box(name,parent.TransformPoint(p),size,material,parent); Object.DestroyImmediate(go.GetComponent<Collider>()); return go;
+            var go=Box(name,parent.TransformPoint(p),size,material,parent); go.transform.localRotation=Quaternion.identity; Object.DestroyImmediate(go.GetComponent<Collider>()); return go;
         }
         static GameObject Shape(PrimitiveType kind,string name,Transform parent,Vector3 p,Vector3 size,Material material)
         {
@@ -292,10 +397,10 @@ namespace CampusPulse.Editor
         {
             var go=new GameObject("Sign "+caption); go.transform.SetParent(parent,false);
             if(world) go.transform.position=p; else go.transform.localPosition=p;
-            go.transform.localRotation=Quaternion.Euler(0,180,0);
+            go.transform.localRotation=Quaternion.identity;
             var text=go.AddComponent<TextMesh>(); text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             go.GetComponent<MeshRenderer>().sharedMaterial=text.font.material;
-            text.text=caption; text.fontSize=64; text.characterSize=scale*3; text.anchor=TextAnchor.MiddleCenter; text.color=color;
+            text.text=caption; text.fontSize=64; text.characterSize=scale*.4f; text.anchor=TextAnchor.MiddleCenter; text.color=color;
         }
         static void CombineStatic(Transform root,string id)
         {

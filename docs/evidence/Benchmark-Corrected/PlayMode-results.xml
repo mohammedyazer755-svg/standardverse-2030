@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 01:54:53Z" end-time="2026-10-13 01:54:57Z" duration="3.8280733">
+  <test-suite type="TestSuite" id="1008" name="Campus Pulse 2030" fullname="Campus Pulse 2030" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-13 01:54:53Z" end-time="2026-10-13 01:54:57Z" duration="3.828073" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1004" name="Campus.PlayTests.dll" fullname="C:/GameDev/CampusPulse2030/Library/ScriptAssemblies/Campus.PlayTests.dll" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-13 01:54:53Z" end-time="2026-10-13 01:54:57Z" duration="3.816544" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4816" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestFixture" id="1001" name="SceneTests" fullname="SceneTests" classname="SceneTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-13 01:54:53Z" end-time="2026-10-13 01:54:57Z" duration="3.813195" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1002" name="FoundationInteractionAndPause" fullname="SceneTests.FoundationInteractionAndPause" methodname="FoundationInteractionAndPause" classname="SceneTests" runstate="Runnable" seed="694673086" result="Passed" start-time="2026-10-13 01:54:53Z" end-time="2026-10-13 01:54:56Z" duration="2.902517" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1003" name="LivingCampusPresentationFollowsState" fullname="SceneTests.LivingCampusPresentationFollowsState" methodname="LivingCampusPresentationFollowsState" classname="SceneTests" runstate="Runnable" seed="409547270" result="Passed" start-time="2026-10-13 01:54:56Z" end-time="2026-10-13 01:54:57Z" duration="0.895147" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: Logs/Campus/PlayMode-results.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

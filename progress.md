@@ -1,63 +1,52 @@
-# CAMPUS PULSE 2030 — PROGRESS
+﻿# CAMPUS PULSE 2030 — PROGRESS
 
 Last updated: 2026-10-13 (Asia/Calcutta)
-Repo root / Unity project path: C:/GameDev/CampusPulse2030
-Unity Editor exact version + installed modules: 6000.3.26f1; Windows standalone support and WebGL support found.
-Current phase: 1 — representative academic block
-Status: BLOCKED — Windows Security prompt prevents editor refresh; user dismissal pending
+Repo / Unity root: C:/GameDev/CampusPulse2030
+Editor: 6000.3.26f1; Windows standalone and WebGL support installed.
+Current phase: 2 — interconnected resource gameplay
+Status: IN PROGRESS
 
 ## Implemented and verified
-- Inspected project version, packages, existing template assets, master specification, implementation plan, and supplied Phase 1 request.
-- Existing Unity editor process owns this project. Initial inspection found only the template; foundation was implemented and verified during this session.
-- Foundation now passes: 4 EditMode tests, 1 PlayMode test, Windows build (0 errors/0 warnings), and visible 1920x1080 standalone smoke run. Render reviewed. Evidence preserved in `Logs/Campus/Foundation/`.
+- Foundation: 4 EditMode tests, original PlayMode test, Windows build and visible smoke. Source 3485028; release foundation-v0.1.0.
+- Phase 1 COMPLETE: 13 facility IDs, original detailed procedural campus, strategic camera, selection/focus/highlight, HUD, 121 state-derived student visuals, vehicle, wind, solar tables, pump rotor and lamps.
+- Corrected benchmark rendered/reviewed before expansion. Full-campus 3 PlayMode tests pass; Windows build 0 errors/0 warnings; all 13 facility ray-picks and standalone smoke pass.
+- Final actual 1920x1080 overview reviewed. Evidence: docs/evidence/Phase1; benchmark history: docs/evidence/Benchmark-*.
 
-## Currently implemented but NOT verified
-- Representative-block source is authored in `LivingCampusBuilder.cs` with `CampusLife.cs`; not yet imported/compiled by the Unity asset pipeline or rendered.
-- Separate Roslyn compile of runtime/simulation/editor source against installed Unity references passed (`Logs/Campus/StaticCompile.rsp`, `StaticCompile.dll`). This does not substitute for Unity per-assembly import or runtime verification.
-- Benchmark includes academic/library/canteen assembly, landscaping, student pool, vehicle, wind and lamps. Full-campus utility/parking methods are still empty pending the mandatory benchmark review. Do not call `campus` until expansion is implemented.
-- Latest PlayMode source now adds real header UI raycasts and population/movement/pause checks; these changes have not run yet.
-- A Windows Security firewall prompt from the development player is blocking editor focus/refresh. User has been asked to click Cancel; no network access is required or granted.
-- Implemented `CampusState`, `FacilityView`, `StrategicCamera`, `CampusSession`, `CampusHud`, `RuntimeEvidence` and editor generator/automation under `Assets/_Game/`.
+## Implemented but NOT verified / incomplete
+- Phase 2 not implemented yet; resource values still baseline data.
+- Sustained profiling, photorealistic reference parity, cinematic/audio polish, phone control and Future Lens UI are not claimed.
 
-## Commands run + results / Unity logs
-- Read-only PowerShell project inspection. Found URP 17.3.0, Input System 1.20.0, Timeline 1.8.13 and Test Framework 1.6.0.
-- Unity executable: C:/Program Files/Unity/Hub/Editor/6000.3.26f1/Editor/Unity.exe.
-- Unity generated `Assets/_Game/Scenes/Campus.unity` with three selectable facilities; compilation succeeded after correcting a quaternion expression.
-- `Logs/Campus/EditMode-results.xml`: 4 passed, 0 failed.
-- `Logs/Campus/PlayMode-results.xml`: 1 passed, 0 failed (menu, selection/highlight/focus, pause, restart, camera bounds).
-- Fixed test callback registration across PlayMode domain reload so results persist to XML.
-- Foundation checkpoint commit: `Establish verified Unity foundation and project continuity` (inspect `git log -1` for exact hash).
-- First `benchmark` automation request was consumed by the old loaded assembly before refresh and reported Unknown campus command. Source contains the new command, but it must be imported before retrying.
+## Commands and evidence
+- Editor commands refresh, benchmark, campus, play-tests, build via Library/CampusAutomation/request.txt.
+- Logs/Campus/PlayMode-results.xml: 3 passed, 0 failed.
+- Visible player: builds/Windows/CampusPulse2030.exe --campus-smoke -screen-width 1920 -screen-height 1080 -screen-fullscreen 0.
+- Final Phase 1 diagnostic: 12-second uncapped Development build at 1080p; median 3.09 ms / p95 4.88 ms. RTX 4060 Laptop and detected i7-13650HX. Not a sustained performance guarantee.
 
-## Build location + last build result
-`builds/Windows/CampusPulse2030.exe`: foundation build succeeded in 3m09s, 167414894 bytes. Visible player smoke passed all three facility ray-picks, pause and UI-block guards. Screenshots captured.
-Foundation-only 12-second uncapped visible sample: median 1.88 ms, p95 3.29 ms. This is not a Phase 1 performance claim. Hidden-window timing was invalid and excluded.
+## Build location and result
+builds/Windows/CampusPulse2030.exe: Phase 1, succeeded, 0 errors/0 warnings; 171017990 bytes.
 
-## Current known bugs + reproduction steps
-Foundation complete; Phase 1 has not passed its gate. Detected CPU is i7-13650HX, not the brief's i7-13700HX; GPU is RTX 4060 Laptop.
-Windows Security displays a network-access prompt for campuspulse2030. It is not accessible through the normal desktop UIAutomation tree; editor activation/refresh is blocked. User was asked to Cancel it. No firewall settings were changed. Visible standalone screenshots were successfully captured before this blocker was diagnosed.
+## Known failures / corrections
+- Corrected mirrored/oversized signs, roof occlusion, solar local transforms, overview crop and resolution-dependent UI test.
+- Earlier firewall/focus issue no longer blocks editor command-file workflow. No firewall permissions changed.
+- Hidden player timings are invalid because the hidden window has no drawable screenshot surface.
 
-## Decision log / architecture changes
-- User requires every phase-end/incomplete handoff to record implementation, actual tests, failures/incomplete work, changed files, exact next action, updated progress.md and an appropriate Git checkpoint. Enforced in AGENTS.md; phase reports and template added under docs/.
-- User-designated GitHub destination: https://github.com/mohammedyazer755-svg/standardverse-2030 (inspected empty before initial upload). Source/evidence pushed to main; verified foundation executable uploaded to release `foundation-v0.1.0`.
-- GitHub verified source checkpoint: `5c9df0c0b0e3948a8a2f9f9aa3ffb0549e6e6d94` matched local HEAD via `git ls-remote`. Foundation tag points to `3485028`. Final distribution documentation follows in a separate commit; use `git log -1` and `git ls-remote origin refs/heads/main` to compare it.
-- Release asset verified uploaded: 68,858,530 bytes, 302 archive entries, executable and player DLL present. Server/local SHA-256 match: `012e46a3423275ffc20dde27e5da603c897ce1788d281520c6c5a55ac18f534d`. Links and launch steps: `docs/DISTRIBUTION.md`.
-- Phase reporting files: `docs/PHASE_HANDOFF_TEMPLATE.md`, `docs/phases/FOUNDATION.md`, `docs/phases/PHASE_1_CHECKPOINT.md` and actual changed-file lists. Reviewed foundation evidence copied into `docs/evidence/Foundation/` for repository retention.
-- Complete and verify foundation before Phase 1 expansion.
-- Use original procedural architectural kit, with campus reference guiding massing/landscape and restrained cyan UI accents.
-- Preserve the existing open editor; use bounded local editor automation rather than a competing editor on the same project.
+## Decisions / scope
+- User authorizes Phase 2 after Phase 1; do not begin Phase 3.
+- Plain C# simulation owns resources and counts. Presentation cannot change accounting.
+- Accounting/snapshot design: docs/SIMULATION_MODEL.md.
+- Every phase must record implementation, actual tests, failures/incomplete work, changed files, exact next action, updated progress.md and Git checkpoint. See docs/phases.
+- Save to https://github.com/mohammedyazer755-svg/standardverse-2030; binaries in release assets. No force pushes. Exclude caches, raw machine logs and secrets.
 
 ## Mobile network info
-Out of current phase scope; no tokens or addresses recorded.
+Not implemented; outside current phase scope.
 
-## Assets used + license/provenance
-Unity template assets; user-supplied references for direction only. No reference image copied into game art.
+## Assets and provenance
+Original procedural geometry/materials and Unity packages. User references are direction only. See docs/ASSET_LICENSES.md.
 
-## Next THREE concrete steps
-1. After user dismisses the firewall prompt with Cancel, focus Unity and Assets > Refresh. Confirm updated Campus.Editor.dll and no compiler errors, then run `powershell -File scripts/Invoke-CampusEditor.ps1 -Command benchmark`.
-2. Run `play-tests`, then `build`; launch the visible player with `--campus-smoke -screen-width 1920 -screen-height 1080 -screen-fullscreen 0`. Review `builds/Windows/Evidence/academic-block.png` and `runtime-report.json`, improve the benchmark before expansion. A hidden player has no drawable screenshot surface and yields invalid frame timings.
-3. Implement remaining full-campus utilities/parking and distinct facilities after benchmark review; generate `campus`, repeat tests/render review/build and record limitations. Do not begin Phase 2.
+## Next THREE actions
+1. Implement deterministic flows and validated actions with budget/staff/time and snapshot cloning.
+2. Wire scenarios, preview/confirmation UI, alerts and state-driven water/power/waste/queue visuals.
+3. Run accounting/action/snapshot and end-to-end scenario tests, capture actual player evidence, build, update phase report and GitHub checkpoint.
 
-## How a fresh AI resumes
-Read AGENTS.md and listed docs; inspect actual files and Logs before acting. Do not regenerate user-authored scenes or claim Phase 1 completion without rendered and runtime evidence.
-The currently saved Campus scene and Windows executable are the verified three-block FOUNDATION, not the unverified benchmark source. Preserve `docs/evidence/Foundation/` and local `Logs/Campus/Foundation/`; do not mistake those images for Phase 1 art. In-progress Phase 1 source is checkpointed on GitHub main after the foundation commit. Publishing did not resolve the earlier editor blocker or verify Phase 1.
+## Resume
+Read AGENTS.md, GAME_SPEC, implementation plan and this file. Inspect Git and Logs before edits. Preserve the saved Phase 1 campus. Next source: Assets/_Game/Scripts/Simulation/CampusState.cs. Send refresh to the open editor after edits and wait for compilation before tests.

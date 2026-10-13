@@ -1,0 +1,313 @@
+AGENTS.md
+Assets/Settings/Mobile_RPAsset.asset
+Assets/Settings/PC_RPAsset.asset
+Assets/_Game/Art/Materials/Asphalt.mat
+Assets/_Game/Art/Materials/Asphalt.mat.meta
+Assets/_Game/Art/Materials/Bench timber.mat
+Assets/_Game/Art/Materials/Bench timber.mat.meta
+Assets/_Game/Art/Materials/Blue reflective glazing.mat
+Assets/_Game/Art/Materials/Blue reflective glazing.mat.meta
+Assets/_Game/Art/Materials/Collection bin 0.mat
+Assets/_Game/Art/Materials/Collection bin 0.mat.meta
+Assets/_Game/Art/Materials/Collection bin 1.mat
+Assets/_Game/Art/Materials/Collection bin 1.mat.meta
+Assets/_Game/Art/Materials/Collection bin 2.mat
+Assets/_Game/Art/Materials/Collection bin 2.mat.meta
+Assets/_Game/Art/Materials/Foliage olive.mat
+Assets/_Game/Art/Materials/Foliage olive.mat.meta
+Assets/_Game/Art/Materials/Foliage sage.mat
+Assets/_Game/Art/Materials/Foliage sage.mat.meta
+Assets/_Game/Art/Materials/Graphite metal.mat
+Assets/_Game/Art/Materials/Graphite metal.mat.meta
+Assets/_Game/Art/Materials/Lamp glow.mat
+Assets/_Game/Art/Materials/Lamp glow.mat.meta
+Assets/_Game/Art/Materials/Lawn.mat
+Assets/_Game/Art/Materials/Pale concrete.mat
+Assets/_Game/Art/Materials/Pale concrete.mat.meta
+Assets/_Game/Art/Materials/Paving.mat
+Assets/_Game/Art/Materials/Paving.mat.meta
+Assets/_Game/Art/Materials/Photovoltaic cells.mat
+Assets/_Game/Art/Materials/Photovoltaic cells.mat.meta
+Assets/_Game/Art/Materials/Reservoir water.mat
+Assets/_Game/Art/Materials/Reservoir water.mat.meta
+Assets/_Game/Art/Materials/Road paint.mat
+Assets/_Game/Art/Materials/Road paint.mat.meta
+Assets/_Game/Art/Materials/Roof gravel.mat
+Assets/_Game/Art/Materials/Roof gravel.mat.meta
+Assets/_Game/Art/Materials/Selection cyan.mat
+Assets/_Game/Art/Materials/Service teal.mat
+Assets/_Game/Art/Materials/Service teal.mat.meta
+Assets/_Game/Art/Materials/Student blue.mat
+Assets/_Game/Art/Materials/Student blue.mat.meta
+Assets/_Game/Art/Materials/Student burgundy.mat
+Assets/_Game/Art/Materials/Student burgundy.mat.meta
+Assets/_Game/Art/Materials/Student ochre.mat
+Assets/_Game/Art/Materials/Student ochre.mat.meta
+Assets/_Game/Art/Materials/Student skin.mat
+Assets/_Game/Art/Materials/Student skin.mat.meta
+Assets/_Game/Art/Materials/Student teal.mat
+Assets/_Game/Art/Materials/Student teal.mat.meta
+Assets/_Game/Art/Materials/Student trousers.mat
+Assets/_Game/Art/Materials/Student trousers.mat.meta
+Assets/_Game/Art/Materials/Tree bark.mat
+Assets/_Game/Art/Materials/Tree bark.mat.meta
+Assets/_Game/Art/Materials/Warm limestone.mat
+Assets/_Game/Art/Materials/Warm limestone.mat.meta
+Assets/_Game/Art/Meshes.meta
+Assets/_Game/Art/Meshes/HollowTank.asset
+Assets/_Game/Art/Meshes/HollowTank.asset.meta
+Assets/_Game/Art/Meshes/academic-0.asset
+Assets/_Game/Art/Meshes/academic-0.asset.meta
+Assets/_Game/Art/Meshes/academic-1.asset
+Assets/_Game/Art/Meshes/academic-1.asset.meta
+Assets/_Game/Art/Meshes/academic-2.asset
+Assets/_Game/Art/Meshes/academic-2.asset.meta
+Assets/_Game/Art/Meshes/academic-3.asset
+Assets/_Game/Art/Meshes/academic-3.asset.meta
+Assets/_Game/Art/Meshes/academic-4.asset
+Assets/_Game/Art/Meshes/academic-4.asset.meta
+Assets/_Game/Art/Meshes/academic-landscape-0.asset
+Assets/_Game/Art/Meshes/academic-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/academic-landscape-1.asset
+Assets/_Game/Art/Meshes/academic-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/academic-landscape-2.asset
+Assets/_Game/Art/Meshes/academic-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/academic-landscape-3.asset
+Assets/_Game/Art/Meshes/academic-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/academic-landscape-4.asset
+Assets/_Game/Art/Meshes/academic-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/academic-selection-0.asset
+Assets/_Game/Art/Meshes/academic-selection-0.asset.meta
+Assets/_Game/Art/Meshes/administration-0.asset
+Assets/_Game/Art/Meshes/administration-0.asset.meta
+Assets/_Game/Art/Meshes/administration-1.asset
+Assets/_Game/Art/Meshes/administration-1.asset.meta
+Assets/_Game/Art/Meshes/administration-2.asset
+Assets/_Game/Art/Meshes/administration-2.asset.meta
+Assets/_Game/Art/Meshes/administration-3.asset
+Assets/_Game/Art/Meshes/administration-3.asset.meta
+Assets/_Game/Art/Meshes/administration-4.asset
+Assets/_Game/Art/Meshes/administration-4.asset.meta
+Assets/_Game/Art/Meshes/administration-landscape-0.asset
+Assets/_Game/Art/Meshes/administration-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/administration-landscape-1.asset
+Assets/_Game/Art/Meshes/administration-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/administration-landscape-2.asset
+Assets/_Game/Art/Meshes/administration-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/administration-landscape-3.asset
+Assets/_Game/Art/Meshes/administration-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/administration-landscape-4.asset
+Assets/_Game/Art/Meshes/administration-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/administration-selection-0.asset
+Assets/_Game/Art/Meshes/administration-selection-0.asset.meta
+Assets/_Game/Art/Meshes/auditorium-0.asset
+Assets/_Game/Art/Meshes/auditorium-0.asset.meta
+Assets/_Game/Art/Meshes/auditorium-1.asset
+Assets/_Game/Art/Meshes/auditorium-1.asset.meta
+Assets/_Game/Art/Meshes/auditorium-2.asset
+Assets/_Game/Art/Meshes/auditorium-2.asset.meta
+Assets/_Game/Art/Meshes/auditorium-3.asset
+Assets/_Game/Art/Meshes/auditorium-3.asset.meta
+Assets/_Game/Art/Meshes/auditorium-4.asset
+Assets/_Game/Art/Meshes/auditorium-4.asset.meta
+Assets/_Game/Art/Meshes/auditorium-landscape-0.asset
+Assets/_Game/Art/Meshes/auditorium-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/auditorium-landscape-1.asset
+Assets/_Game/Art/Meshes/auditorium-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/auditorium-landscape-2.asset
+Assets/_Game/Art/Meshes/auditorium-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/auditorium-landscape-3.asset
+Assets/_Game/Art/Meshes/auditorium-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/auditorium-landscape-4.asset
+Assets/_Game/Art/Meshes/auditorium-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/auditorium-selection-0.asset
+Assets/_Game/Art/Meshes/auditorium-selection-0.asset.meta
+Assets/_Game/Art/Meshes/canteen-0.asset
+Assets/_Game/Art/Meshes/canteen-0.asset.meta
+Assets/_Game/Art/Meshes/canteen-1.asset
+Assets/_Game/Art/Meshes/canteen-1.asset.meta
+Assets/_Game/Art/Meshes/canteen-2.asset
+Assets/_Game/Art/Meshes/canteen-2.asset.meta
+Assets/_Game/Art/Meshes/canteen-3.asset
+Assets/_Game/Art/Meshes/canteen-3.asset.meta
+Assets/_Game/Art/Meshes/canteen-4.asset
+Assets/_Game/Art/Meshes/canteen-4.asset.meta
+Assets/_Game/Art/Meshes/canteen-landscape-0.asset
+Assets/_Game/Art/Meshes/canteen-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/canteen-landscape-1.asset
+Assets/_Game/Art/Meshes/canteen-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/canteen-landscape-2.asset
+Assets/_Game/Art/Meshes/canteen-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/canteen-landscape-3.asset
+Assets/_Game/Art/Meshes/canteen-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/canteen-landscape-4.asset
+Assets/_Game/Art/Meshes/canteen-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/canteen-selection-0.asset
+Assets/_Game/Art/Meshes/canteen-selection-0.asset.meta
+Assets/_Game/Art/Meshes/garden-selection-0.asset
+Assets/_Game/Art/Meshes/garden-selection-0.asset.meta
+Assets/_Game/Art/Meshes/gardens-0.asset
+Assets/_Game/Art/Meshes/gardens-0.asset.meta
+Assets/_Game/Art/Meshes/gardens-1.asset
+Assets/_Game/Art/Meshes/gardens-1.asset.meta
+Assets/_Game/Art/Meshes/gardens-2.asset
+Assets/_Game/Art/Meshes/gardens-2.asset.meta
+Assets/_Game/Art/Meshes/hostel-0.asset
+Assets/_Game/Art/Meshes/hostel-0.asset.meta
+Assets/_Game/Art/Meshes/hostel-1.asset
+Assets/_Game/Art/Meshes/hostel-1.asset.meta
+Assets/_Game/Art/Meshes/hostel-2.asset
+Assets/_Game/Art/Meshes/hostel-2.asset.meta
+Assets/_Game/Art/Meshes/hostel-3.asset
+Assets/_Game/Art/Meshes/hostel-3.asset.meta
+Assets/_Game/Art/Meshes/hostel-4.asset
+Assets/_Game/Art/Meshes/hostel-4.asset.meta
+Assets/_Game/Art/Meshes/hostel-landscape-0.asset
+Assets/_Game/Art/Meshes/hostel-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/hostel-landscape-1.asset
+Assets/_Game/Art/Meshes/hostel-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/hostel-landscape-2.asset
+Assets/_Game/Art/Meshes/hostel-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/hostel-landscape-3.asset
+Assets/_Game/Art/Meshes/hostel-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/hostel-landscape-4.asset
+Assets/_Game/Art/Meshes/hostel-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/hostel-selection-0.asset
+Assets/_Game/Art/Meshes/hostel-selection-0.asset.meta
+Assets/_Game/Art/Meshes/landscape-0.asset
+Assets/_Game/Art/Meshes/landscape-0.asset.meta
+Assets/_Game/Art/Meshes/landscape-1.asset
+Assets/_Game/Art/Meshes/landscape-1.asset.meta
+Assets/_Game/Art/Meshes/landscape-2.asset
+Assets/_Game/Art/Meshes/landscape-2.asset.meta
+Assets/_Game/Art/Meshes/landscape-3.asset
+Assets/_Game/Art/Meshes/landscape-3.asset.meta
+Assets/_Game/Art/Meshes/landscape-4.asset
+Assets/_Game/Art/Meshes/landscape-4.asset.meta
+Assets/_Game/Art/Meshes/landscape-5.asset
+Assets/_Game/Art/Meshes/landscape-5.asset.meta
+Assets/_Game/Art/Meshes/library-0.asset
+Assets/_Game/Art/Meshes/library-0.asset.meta
+Assets/_Game/Art/Meshes/library-1.asset
+Assets/_Game/Art/Meshes/library-1.asset.meta
+Assets/_Game/Art/Meshes/library-2.asset
+Assets/_Game/Art/Meshes/library-2.asset.meta
+Assets/_Game/Art/Meshes/library-3.asset
+Assets/_Game/Art/Meshes/library-3.asset.meta
+Assets/_Game/Art/Meshes/library-4.asset
+Assets/_Game/Art/Meshes/library-4.asset.meta
+Assets/_Game/Art/Meshes/library-landscape-0.asset
+Assets/_Game/Art/Meshes/library-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/library-landscape-1.asset
+Assets/_Game/Art/Meshes/library-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/library-landscape-2.asset
+Assets/_Game/Art/Meshes/library-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/library-landscape-3.asset
+Assets/_Game/Art/Meshes/library-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/library-landscape-4.asset
+Assets/_Game/Art/Meshes/library-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/library-selection-0.asset
+Assets/_Game/Art/Meshes/library-selection-0.asset.meta
+Assets/_Game/Art/Meshes/parking-selection-0.asset
+Assets/_Game/Art/Meshes/parking-selection-0.asset.meta
+Assets/_Game/Art/Meshes/power-access-0.asset
+Assets/_Game/Art/Meshes/power-access-0.asset.meta
+Assets/_Game/Art/Meshes/power-selection-0.asset
+Assets/_Game/Art/Meshes/power-selection-0.asset.meta
+Assets/_Game/Art/Meshes/recycling-access-0.asset
+Assets/_Game/Art/Meshes/recycling-access-0.asset.meta
+Assets/_Game/Art/Meshes/recycling-selection-0.asset
+Assets/_Game/Art/Meshes/recycling-selection-0.asset.meta
+Assets/_Game/Art/Meshes/research-0.asset
+Assets/_Game/Art/Meshes/research-0.asset.meta
+Assets/_Game/Art/Meshes/research-1.asset
+Assets/_Game/Art/Meshes/research-1.asset.meta
+Assets/_Game/Art/Meshes/research-2.asset
+Assets/_Game/Art/Meshes/research-2.asset.meta
+Assets/_Game/Art/Meshes/research-3.asset
+Assets/_Game/Art/Meshes/research-3.asset.meta
+Assets/_Game/Art/Meshes/research-4.asset
+Assets/_Game/Art/Meshes/research-4.asset.meta
+Assets/_Game/Art/Meshes/research-landscape-0.asset
+Assets/_Game/Art/Meshes/research-landscape-0.asset.meta
+Assets/_Game/Art/Meshes/research-landscape-1.asset
+Assets/_Game/Art/Meshes/research-landscape-1.asset.meta
+Assets/_Game/Art/Meshes/research-landscape-2.asset
+Assets/_Game/Art/Meshes/research-landscape-2.asset.meta
+Assets/_Game/Art/Meshes/research-landscape-3.asset
+Assets/_Game/Art/Meshes/research-landscape-3.asset.meta
+Assets/_Game/Art/Meshes/research-landscape-4.asset
+Assets/_Game/Art/Meshes/research-landscape-4.asset.meta
+Assets/_Game/Art/Meshes/research-selection-0.asset
+Assets/_Game/Art/Meshes/research-selection-0.asset.meta
+Assets/_Game/Art/Meshes/solar-access-0.asset
+Assets/_Game/Art/Meshes/solar-access-0.asset.meta
+Assets/_Game/Art/Meshes/solar-selection-0.asset
+Assets/_Game/Art/Meshes/solar-selection-0.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-5.5-0.asset
+Assets/_Game/Art/Meshes/tree-crown-5.5-0.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-5.5-1.asset
+Assets/_Game/Art/Meshes/tree-crown-5.5-1.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-5.7-0.asset
+Assets/_Game/Art/Meshes/tree-crown-5.7-0.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-5.7-1.asset
+Assets/_Game/Art/Meshes/tree-crown-5.7-1.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-6.0-0.asset
+Assets/_Game/Art/Meshes/tree-crown-6.0-0.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-6.0-1.asset
+Assets/_Game/Art/Meshes/tree-crown-6.0-1.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-6.5-0.asset
+Assets/_Game/Art/Meshes/tree-crown-6.5-0.asset.meta
+Assets/_Game/Art/Meshes/tree-crown-6.5-1.asset
+Assets/_Game/Art/Meshes/tree-crown-6.5-1.asset.meta
+Assets/_Game/Art/Meshes/water-access-0.asset
+Assets/_Game/Art/Meshes/water-access-0.asset.meta
+Assets/_Game/Art/Meshes/water-selection-0.asset
+Assets/_Game/Art/Meshes/water-selection-0.asset.meta
+Assets/_Game/Editor/CampusAutomation.cs
+Assets/_Game/Editor/LivingCampusBuilder.cs
+Assets/_Game/Editor/LivingCampusBuilder.cs.meta
+Assets/_Game/Prefabs.meta
+Assets/_Game/Prefabs/Student.prefab
+Assets/_Game/Prefabs/Student.prefab.meta
+Assets/_Game/Prefabs/academic.prefab
+Assets/_Game/Prefabs/academic.prefab.meta
+Assets/_Game/Prefabs/administration.prefab
+Assets/_Game/Prefabs/administration.prefab.meta
+Assets/_Game/Prefabs/auditorium.prefab
+Assets/_Game/Prefabs/auditorium.prefab.meta
+Assets/_Game/Prefabs/canteen.prefab
+Assets/_Game/Prefabs/canteen.prefab.meta
+Assets/_Game/Prefabs/hostel.prefab
+Assets/_Game/Prefabs/hostel.prefab.meta
+Assets/_Game/Prefabs/library.prefab
+Assets/_Game/Prefabs/library.prefab.meta
+Assets/_Game/Prefabs/research.prefab
+Assets/_Game/Prefabs/research.prefab.meta
+Assets/_Game/Scenes/Campus.unity
+Assets/_Game/Scripts/Runtime/CampusLife.cs
+Assets/_Game/Scripts/Runtime/CampusLife.cs.meta
+Assets/_Game/Scripts/Runtime/FacilityView.cs
+Assets/_Game/Scripts/Runtime/StrategicCamera.cs
+Assets/_Game/Tests/PlayMode/SceneTests.cs
+ProjectSettings/QualitySettings.asset
+docs/GAME_SPEC.md
+docs/SIMULATION_MODEL.md
+docs/evidence/Benchmark-Corrected/PlayMode-results.xml
+docs/evidence/Benchmark-Corrected/academic-block.png
+docs/evidence/Benchmark-Corrected/build-result.txt
+docs/evidence/Benchmark-Corrected/overview.png
+docs/evidence/Benchmark-Corrected/runtime-report.json
+docs/evidence/Benchmark-Initial/academic-block.png
+docs/evidence/Benchmark-Initial/build-result.txt
+docs/evidence/Benchmark-Initial/overview.png
+docs/evidence/Benchmark-Initial/runtime-report.json
+docs/evidence/Phase1/PlayMode-results.xml
+docs/evidence/Phase1/academic-block.png
+docs/evidence/Phase1/build-result.txt
+docs/evidence/Phase1/overview.png
+docs/evidence/Phase1/runtime-report.json
+docs/phases/PHASE_1.md
+docs/phases/PHASE_1_FILES.txt
+docs/phases/PHASE_1_VALIDATION.md
+progress.md

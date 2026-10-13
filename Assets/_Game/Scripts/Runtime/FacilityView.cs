@@ -14,6 +14,7 @@ namespace CampusPulse
         public Vector3 FocusOffset = new Vector3(0, 2, 0);
         public float FocusDistance = 46;
         public Renderer Highlight;
+        public Renderer ActivityIndicator;
         public Transform WaterSurface;
         public FacilityState CreateState() => new FacilityState(Id, DisplayName, Purpose, Capacity, InitialOccupants, Water, Power, Waste);
         MaterialPropertyBlock properties;
@@ -29,6 +30,13 @@ namespace CampusPulse
         }
         public void Present(CampusState state)
         {
+            if(ActivityIndicator)
+            {
+                properties ??= new MaterialPropertyBlock();
+                var color=state.PowerSupplyKW>0?new Color(.1f,.8f,.65f):new Color(.9f,.15f,.08f);
+                properties.SetColor("_BaseColor",color); properties.SetColor("_EmissionColor",color);
+                ActivityIndicator.SetPropertyBlock(properties);
+            }
             if (WaterSurface)
             {
                 var p = WaterSurface.localPosition;

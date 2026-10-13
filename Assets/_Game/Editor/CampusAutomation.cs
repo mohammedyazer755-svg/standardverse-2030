@@ -31,6 +31,7 @@ namespace CampusPulse.Editor
                 switch (command)
                 {
                     case "foundation": CampusBuilder.Foundation(); break;
+                    case "refresh": AssetDatabase.Refresh(); break;
                     case "benchmark": LivingCampusBuilder.Benchmark(); break;
                     case "campus": LivingCampusBuilder.FullCampus(); break;
                     case "build": CampusBuilder.Build(); break;
