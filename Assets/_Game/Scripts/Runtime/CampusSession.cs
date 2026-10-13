@@ -23,6 +23,7 @@ namespace CampusPulse
         {
             ResetState();
             Application.targetFrameRate = 60;
+            Application.runInBackground = true;
         }
         public void ResetState()
         {

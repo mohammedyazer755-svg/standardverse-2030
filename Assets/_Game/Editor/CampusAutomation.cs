@@ -31,6 +31,8 @@ namespace CampusPulse.Editor
                 switch (command)
                 {
                     case "foundation": CampusBuilder.Foundation(); break;
+                    case "benchmark": LivingCampusBuilder.Benchmark(); break;
+                    case "campus": LivingCampusBuilder.FullCampus(); break;
                     case "build": CampusBuilder.Build(); break;
                     case "edit-tests": Tests(TestMode.EditMode); return;
                     case "play-tests": Tests(TestMode.PlayMode); return;

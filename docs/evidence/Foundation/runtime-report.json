@@ -1,0 +1,16 @@
+{
+    "graphicsDevice": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "processor": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "unityVersion": "6000.3.26f1",
+    "timestamp": "2026-10-13T00:43:20.4672123Z",
+    "width": 1920,
+    "height": 1080,
+    "facilities": 3,
+    "frames": 5999,
+    "visualWalkers": 0,
+    "medianMS": 1.877501368522644,
+    "p95MS": 3.2883007526397707,
+    "seconds": 12.002817153930664,
+    "passed": true,
+    "error": ""
+}

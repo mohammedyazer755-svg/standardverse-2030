@@ -2,6 +2,12 @@
 
 Status starts unverified. Consult progress.md and actual Logs/Campus outputs; implemented code alone is not a pass.
 
+## Recorded foundation result — 13 October 2026
+
+Four EditMode and one PlayMode test passed. Windows development build succeeded with zero errors and zero warnings. Visible standalone smoke test passed for three facilities at 1920x1080, including ray selection, pause and screenshots. Evidence: `Logs/Campus/Foundation/`. This verifies the foundation only. Newly added Phase 1 tests have not run.
+
+The separate benchmark C# compilation passed, but Unity import, benchmark screenshot review and Phase 1 performance testing are blocked by the Windows Security prompt described in progress.md. No Phase 1 completion claim is made.
+
 ## Foundation gate
 - Editor compilation succeeds.
 - At least three uniquely identified facilities exist in a saved scene.

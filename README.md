@@ -12,7 +12,9 @@ The scene currently displays explicitly labeled illustrative baseline resources.
 
 Save any dirty scene first. Use **Campus Pulse → Generate Foundation** only for the foundation scene, and **Campus Pulse → Build Windows** to build. Generation replaces only the generated Campus scene, not SampleScene. Do not regenerate over hand-edited Campus content without preserving it.
 
-For the existing open editor, put a supported command in `Library/CampusAutomation/request.txt`: `foundation`, `edit-tests`, `play-tests`, or `build`. The editor polls once per second when ready. If external edits are not imported, focus the editor and choose Assets → Refresh. Results go to `Logs/Campus/`.
+For the existing open editor, put a supported command in `Library/CampusAutomation/request.txt`: `foundation`, `benchmark`, `edit-tests`, `play-tests`, or `build`. The editor polls once per second when ready. If external edits are not imported, focus the editor and choose Assets → Refresh before submitting a command. Results go to `Logs/Campus/`. `campus` is reserved for the full expansion and is not ready while the benchmark gate remains pending.
+
+The latest saved scene/build is the verified foundation. The benchmark source is in progress; check `progress.md` before generation. A Windows firewall prompt from the development player can be cancelled for this offline phase; network access is not needed.
 
 When this project is closed in the editor, the Windows build equivalent is:
 

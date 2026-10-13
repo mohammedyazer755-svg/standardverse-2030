@@ -51,7 +51,7 @@ namespace CampusPulse
             if (!summary) return;
             var s = Session.State;
             summary.text = $"WATER  {s.WaterStoredLiters / 1000:0} kL     ENERGY  {s.PowerSupplyKW:0} kW     BUDGET  INR {s.BudgetINR:N0}";
-            time.text = $"DAY {s.Minute / 1440 + 1:00}   {s.Minute / 60 % 24:00}:{s.Minute % 60:00}    •    {Session.Mode.ToString().ToUpperInvariant()}    /    ILLUSTRATIVE BASELINE DATA";
+            time.text = $"DAY {s.Minute / 1440 + 1:00}   {s.Minute / 60 % 24:00}:{s.Minute % 60:00}    •    {Session.Mode.ToString().ToUpperInvariant()}    /    SATISFACTION {s.Satisfaction}    SUSTAINABILITY {s.Sustainability}    /    ILLUSTRATIVE DATA";
             menu.SetActive(Session.Mode == SessionMode.Menu);
             inspector.SetActive(Session.Mode != SessionMode.Menu && Session.Selected);
             if (!Session.Selected) return;

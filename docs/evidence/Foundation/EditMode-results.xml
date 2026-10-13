@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.1583993">
+  <test-suite type="TestSuite" id="1000" name="CampusPulse2030" fullname="CampusPulse2030" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.158399" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1007" name="Campus.EditTests.dll" fullname="C:/GameDev/CampusPulse2030/Library/ScriptAssemblies/Campus.EditTests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.130056" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="4816" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1002" name="StateTests" fullname="StateTests" classname="StateTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.122899" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1006" name="CrowdVisualsAreCappedWithoutChangingPopulation" fullname="StateTests.CrowdVisualsAreCappedWithoutChangingPopulation" methodname="CrowdVisualsAreCappedWithoutChangingPopulation" classname="StateTests" runstate="Runnable" seed="173407501" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.054080" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1005" name="DuplicateIdsRejected" fullname="StateTests.DuplicateIdsRejected" methodname="DuplicateIdsRejected" classname="StateTests" runstate="Runnable" seed="700731154" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.009840" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1003" name="PausedClockDoesNotAdvance" fullname="StateTests.PausedClockDoesNotAdvance" methodname="PausedClockDoesNotAdvance" classname="StateTests" runstate="Runnable" seed="1048623308" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.000889" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1004" name="RepeatedClockInputsProduceSameState" fullname="StateTests.RepeatedClockInputsProduceSameState" methodname="RepeatedClockInputsProduceSameState" classname="StateTests" runstate="Runnable" seed="717811019" result="Passed" start-time="2026-10-13 00:36:58Z" end-time="2026-10-13 00:36:58Z" duration="0.000746" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: C:/Users/Mohammed yazer/AppData/LocalLow/DefaultCompany/CampusPulse2030\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

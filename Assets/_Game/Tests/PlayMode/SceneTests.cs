@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using CampusPulse;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public sealed class SceneTests
 {
@@ -27,6 +29,29 @@ public sealed class SceneTests
         Assert.LessOrEqual(session.Rig.Distance,171); Assert.GreaterOrEqual(session.Rig.Distance,29);
         Assert.LessOrEqual(Mathf.Abs(session.Rig.Target.x),76);
         Assert.IsNull(session.Pick(Vector2.zero,true));
+        var uiHits = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = new Vector2(Screen.width*.5f,Screen.height-50) },uiHits);
+        Assert.Greater(uiHits.Count,0,"Header must receive UI raycasts");
+        LogAssert.NoUnexpectedReceived();
+    }
+
+    [UnityTest] public IEnumerator LivingCampusPresentationFollowsState()
+    {
+        yield return SceneManager.LoadSceneAsync("Campus"); yield return null;
+        var session=Object.FindFirstObjectByType<CampusSession>();
+        var life=Object.FindFirstObjectByType<CampusLife>();
+        Assert.NotNull(life,"Generate the Phase 1 benchmark/campus before running this suite");
+        int expected=0;
+        foreach(var f in session.Facilities) expected+=session.State.VisualCount(f.Id,18);
+        Assert.AreEqual(Mathf.Min(life.MaximumWalkers,expected),life.ActiveWalkers);
+        Assert.Greater(life.ActiveWalkers,0);
+        var walker=life.transform.GetChild(0); var initial=walker.position;
+        session.Begin(); yield return new WaitForSeconds(.3f);
+        Assert.Greater(Vector3.Distance(initial,walker.position),.01f);
+        session.TogglePause(); var paused=walker.position; yield return new WaitForSeconds(.2f);
+        Assert.AreEqual(paused,walker.position);
+        var ids=new HashSet<string>();
+        foreach(var f in session.Facilities) { Assert.IsTrue(ids.Add(f.Id)); Assert.IsTrue(session.State.Facilities.ContainsKey(f.Id)); }
         LogAssert.NoUnexpectedReceived();
     }
 }

@@ -28,7 +28,7 @@ namespace CampusPulse
         public void Focus(FacilityView facility)
         {
             desiredTarget = facility.transform.position + facility.FocusOffset;
-            desiredDistance = 46;
+            desiredDistance = facility.FocusDistance;
         }
         void Start()
         {
@@ -42,7 +42,7 @@ namespace CampusPulse
             desiredTarget += (right * command.Pan.x + forward * command.Pan.y) * delta * desiredDistance * .5f;
             desiredTarget = new Vector3(Mathf.Clamp(desiredTarget.x, -Bounds.x, Bounds.x), Mathf.Clamp(desiredTarget.y, 0, 12), Mathf.Clamp(desiredTarget.z, -Bounds.y, Bounds.y));
             desiredYaw += command.Orbit * delta * 65;
-            desiredDistance = Mathf.Clamp(desiredDistance - command.Zoom * 6, 30, 170);
+            desiredDistance = Mathf.Clamp(desiredDistance - command.Zoom * 6, 30, 250);
         }
         void LateUpdate()
         {

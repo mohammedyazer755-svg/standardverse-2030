@@ -53,6 +53,7 @@ namespace CampusPulse
             while (Time.realtimeSinceStartup - start < 12) { yield return null; times.Add(Time.unscaledDeltaTime * 1000); }
             report.seconds = Time.realtimeSinceStartup-start; times.Sort(); report.frames=times.Count;
             report.width = Screen.width; report.height = Screen.height;
+            var life = FindFirstObjectByType<CampusLife>(); report.visualWalkers = life ? life.ActiveWalkers : 0;
             report.medianMS=times[times.Count/2]; report.p95MS=times[Mathf.Min(times.Count-1,(int)(times.Count*.95f))];
             report.passed=string.IsNullOrEmpty(report.error); Save(folder,report);
             Application.Quit(report.passed ? 0 : 1);

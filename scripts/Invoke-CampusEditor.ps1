@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('foundation','edit-tests','play-tests','build')]
+    [ValidateSet('foundation','benchmark','campus','edit-tests','play-tests','build')]
     [string]$Command = 'edit-tests'
 )
 $ErrorActionPreference = 'Stop'
