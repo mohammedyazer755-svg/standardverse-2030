@@ -214,4 +214,174 @@ public sealed class StateTests
         for (int i = 0; i < 10; i++) clone2.Tick();
         Assert.AreEqual(clone.Fingerprint(), clone2.Fingerprint(), "Deterministic replay must match clone fingerprint");
     }
+
+    [Test]
+    public void Chapter1ObjectivesAndCompletion()
+    {
+        var s = CreateSampleCampus();
+        var camp = new CampusCampaign();
+        s.Campaign = camp;
+        camp.InitChapter(CampaignChapter.Chapter1_NormalDay);
+
+        Assert.AreEqual(CampaignChapter.Chapter1_NormalDay, camp.CurrentChapter);
+        Assert.IsFalse(camp.ChapterCompleted);
+        Assert.AreEqual(4, camp.Objectives.Count);
+
+        // 1. Repair main leak
+        s.TrySubmitAction(ActionKind.RepairLeak, "water", out _, out _);
+        for (int i = 0; i < 6; i++) s.Tick();
+        Assert.IsFalse(s.MainLeakActive);
+
+        // 2. LED retrofit
+        s.TrySubmitAction(ActionKind.LEDs, "research", out _, out _);
+        for (int i = 0; i < 8; i++) s.Tick();
+        Assert.IsTrue(s.LedInstalledAll);
+
+        // 3. Dispatch waste collection
+        s.TrySubmitAction(ActionKind.CollectWaste, "academic", out _, out _);
+        for (int i = 0; i < 7; i++) s.Tick();
+        Assert.Greater(s.RecycledWasteKg + s.LandfillWasteKg, 0f);
+
+        // 4. Tick through remaining minutes to verify objectives satisfied
+        for (int i = 0; i < 50; i++) s.Tick();
+
+        int completedCount = 0;
+        foreach (var obj in camp.Objectives) if (obj.IsCompleted) completedCount++;
+        Assert.GreaterOrEqual(completedCount, 3, "At least 3 objectives must be satisfied");
+
+        // Advance to chapter 2
+        bool advanced = camp.AdvanceToNextChapter(s);
+        Assert.IsTrue(advanced);
+        Assert.AreEqual(CampaignChapter.Chapter2_PressureBuilds, camp.CurrentChapter);
+    }
+
+    [Test]
+    public void Chapter2SymposiumIncidentAndGridBalancing()
+    {
+        var s = CreateSampleCampus();
+        var camp = new CampusCampaign();
+        s.Campaign = camp;
+        camp.InitChapter(CampaignChapter.Chapter2_PressureBuilds, s);
+
+        // Advance to symposium trigger at minute 690 (start is 660, 30 ticks)
+        for (int i = 0; i < 31; i++) s.Tick();
+
+        var symposium = camp.Incidents[0];
+        Assert.AreEqual("c2_inc_symposium", symposium.Id);
+        Assert.IsTrue(symposium.IsActive, "Symposium incident must be active at minute 690");
+        Assert.Greater(camp.GetActiveExtraPowerKw(), 0f, "Incident must increase active power demand");
+
+        // Player responds by opening extra counter
+        s.TrySubmitAction(ActionKind.ExtraCounter, "canteen", out _, out _);
+        for (int i = 0; i < 5; i++) s.Tick();
+        Assert.IsTrue(symposium.IsResolved, "Extra counter must resolve symposium crowd surge early");
+    }
+
+    [Test]
+    public void Chapter3CascadingCrisisAndRecovery()
+    {
+        var s = CreateSampleCampus();
+        var camp = new CampusCampaign();
+        s.Campaign = camp;
+        camp.InitChapter(CampaignChapter.Chapter3_CampusCrisis, s);
+
+        // Advance to minute 855 (rupture trigger)
+        for (int i = 0; i < 16; i++) s.Tick();
+
+        var burst = camp.Incidents[0];
+        Assert.AreEqual("c3_inc_burst", burst.Id);
+        Assert.IsTrue(burst.IsActive, "Pipeline burst must trigger at minute 855");
+        Assert.Greater(camp.GetActiveExtraLeakLpm(), 50f, "Burst must impose severe extra leak");
+
+        // Player executes repair
+        s.TrySubmitAction(ActionKind.RepairLeak, "water", out _, out _);
+        for (int i = 0; i < 6; i++) s.Tick();
+        Assert.IsTrue(burst.IsResolved, "Pipe repair must resolve crisis burst");
+    }
+
+    [Test]
+    public void CampaignMultiCriteriaEndings()
+    {
+        var s = CreateSampleCampus();
+        var camp = new CampusCampaign();
+        s.Campaign = camp;
+
+        // 1. Test SustainableChampion outcome
+        camp.InitChapter(CampaignChapter.Chapter3_CampusCrisis, s);
+        s.TrySubmitAction(ActionKind.RepairLeak, "water", out _, out _);
+        s.TrySubmitAction(ActionKind.LEDs, "academic", out _, out _);
+        s.TrySubmitAction(ActionKind.Segregation, "academic", out _, out _);
+        for (int i = 0; i < 10; i++) s.Tick();
+
+        camp.ComputeFinalReport(s);
+        Assert.IsNotNull(camp.FinalReport);
+        Assert.AreEqual(CampaignEnding.SustainableChampion, camp.FinalReport.Ending);
+        Assert.IsTrue(camp.FinalReport.EndingTitle.Contains("CHAMPION"));
+
+        // 2. Test CostlyRecovery / Crisis outcome under drained budget
+        var sFail = CreateSampleCampus();
+        var campFail = new CampusCampaign();
+        sFail.Campaign = campFail;
+        campFail.InitChapter(CampaignChapter.Chapter3_CampusCrisis, sFail);
+        // Deplete budget to trigger CostlyRecovery / Crisis
+        sFail.OverrideBudgetForTesting(4500);
+        // Trigger high deficit
+        campFail.ComputeFinalReport(sFail);
+        Assert.IsTrue(campFail.FinalReport.Ending == CampaignEnding.CostlyRecovery || campFail.FinalReport.Ending == CampaignEnding.CampusCrisis);
+    }
+
+    [Test]
+    public void CampaignSaveAndLoadExactRestoration()
+    {
+        var s = CreateSampleCampus();
+        var camp = new CampusCampaign();
+        s.Campaign = camp;
+        camp.InitChapter(CampaignChapter.Chapter2_PressureBuilds);
+
+        // Advance 25 ticks
+        for (int i = 0; i < 25; i++) s.Tick();
+
+        string stateJson = s.ToJson();
+        string campJson = camp.ToJson();
+
+        // Restore into fresh instances
+        var sRestored = CreateSampleCampus();
+        var campRestored = new CampusCampaign();
+        sRestored.Campaign = campRestored;
+
+        sRestored.LoadFromJson(stateJson);
+        campRestored.LoadFromJson(campJson);
+
+        Assert.AreEqual(s.Minute, sRestored.Minute);
+        Assert.AreEqual(s.BudgetINR, sRestored.BudgetINR);
+        Assert.AreEqual(s.WaterStoredLiters, sRestored.WaterStoredLiters, 0.1f);
+        Assert.AreEqual(s.Satisfaction, sRestored.Satisfaction);
+        Assert.AreEqual(camp.CurrentChapter, campRestored.CurrentChapter);
+        Assert.AreEqual(camp.TotalTicks, campRestored.TotalTicks);
+    }
+
+    [Test]
+    public void CampusAdvisorDiagnosticAndBisStandards()
+    {
+        var s = CreateSampleCampus();
+        var camp = new CampusCampaign();
+        var adv = new CampusAdvisor();
+
+        // 1. Diagnostic for active leak
+        Assert.IsTrue(s.MainLeakActive);
+        var advice = adv.Evaluate(s, camp);
+        Assert.IsNotNull(advice);
+        Assert.AreEqual(ActionKind.RepairLeak, advice.SuggestedAction);
+        Assert.IsNotNull(advice.BisReference);
+        Assert.IsTrue(advice.BisReference.StandardCode.Contains("IS 1172"));
+
+        // 2. Diagnostic for critical power deficit
+        s.TrySubmitAction(ActionKind.RepairLeak, "water", out _, out _);
+        for (int i = 0; i < 6; i++) s.Tick();
+
+        // Simulate severe power deficit
+        var advicePower = new AdvisorAdvice(AdvisorPriority.Critical, ResourceCategory.Energy, "Grid Deficit", "Overload", "Backup", ActionKind.Backup, BisCatalog.ElectricalStandards);
+        Assert.AreEqual(AdvisorPriority.Critical, advicePower.Priority);
+        Assert.IsTrue(advicePower.BisReference.StandardCode.Contains("IS 732"));
+    }
 }

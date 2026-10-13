@@ -66,12 +66,14 @@ namespace CampusPulse.Simulation
 
         readonly Dictionary<ActionKind, int> cooldownUntil = new Dictionary<ActionKind, int>();
 
-        public int Minute { get; private set; } = 8 * 60; // 08:00 AM
+        public int Minute { get; internal set; } = 8 * 60; // 08:00 AM
         public int Seed { get; }
         public bool Paused { get; set; }
+        public CampusCampaign Campaign { get; set; }
 
         // Core Economics & Workforce
         public int BudgetINR { get; private set; } = 150000;
+        public void OverrideBudgetForTesting(int amount) { BudgetINR = amount; }
         public int StaffTotal { get; } = 6;
         public int StaffAllocated { get; private set; }
         public int StaffAvailable => Math.Max(0, StaffTotal - StaffAllocated);
@@ -276,6 +278,9 @@ namespace CampusPulse.Simulation
             // 6. Overall Satisfaction & Sustainability Metrics
             ComputeIndices();
 
+            // 7. Process Campaign Objectives & Crisis Incidents
+            Campaign?.Tick(this);
+
             Minute++;
         }
 
@@ -425,7 +430,8 @@ namespace CampusPulse.Simulation
                 pumpPowerDemand = PumpPolicy == PumpPolicy.Boost ? 35f : 18f;
             }
 
-            TotalPowerDemandKW = facilityDemand + pumpPowerDemand;
+            float extraIncidentPower = Campaign != null ? Campaign.GetActiveExtraPowerKw() : 0f;
+            TotalPowerDemandKW = facilityDemand + pumpPowerDemand + extraIncidentPower;
 
             // Backup Generator Delivery
             BackupDeliveredKW = 0f;
@@ -473,7 +479,7 @@ namespace CampusPulse.Simulation
             }
             CurrentWaterDemandLpm = demand;
 
-            float leak = MainLeakActive ? MainLeakRateLpm : 0f;
+            float leak = (MainLeakActive ? MainLeakRateLpm : 0f) + (Campaign != null ? Campaign.GetActiveExtraLeakLpm() : 0f);
 
             // Apply storage delta
             float totalOutflow = CurrentWaterDemandLpm + leak;
@@ -506,6 +512,7 @@ namespace CampusPulse.Simulation
             {
                 float rate = f.BaseWasteKgPerMin;
                 if (f.Id == "canteen" && ExtraCounterActive) rate += 1.2f;
+                if (f.Id == "auditorium" && Campaign != null) rate += Campaign.GetActiveExtraWasteKg();
 
                 f.BinCurrentKg += rate;
                 if (f.BinCurrentKg > f.BinCapacityKg)
@@ -578,7 +585,8 @@ namespace CampusPulse.Simulation
                 if (dayMinute >= 690 && dayMinute <= 810)
                 {
                     // Flow students into canteen queue
-                    int arrivalRate = StaggerArrivalsActive ? 4 : 12;
+                    int extraArrivals = Campaign != null ? Campaign.GetActiveExtraArrivals() : 0;
+                    int arrivalRate = (StaggerArrivalsActive ? 4 : 12) + extraArrivals;
                     if (academic.Occupants >= arrivalRate)
                     {
                         academic.Occupants -= arrivalRate;
@@ -727,6 +735,82 @@ namespace CampusPulse.Simulation
             using var sha = SHA256.Create();
             byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
             return BitConverter.ToString(bytes).Replace("-", "").ToLowerInvariant();
+        }
+
+        public string ToJson()
+        {
+            var sb = new StringBuilder();
+            sb.Append("{");
+            sb.Append($"\"minute\":{Minute},");
+            sb.Append($"\"budget\":{BudgetINR},");
+            sb.Append($"\"staffAllocated\":{StaffAllocated},");
+            sb.Append($"\"satisfaction\":{Satisfaction},");
+            sb.Append($"\"sustainability\":{Sustainability},");
+            sb.Append($"\"waterStored\":{WaterStoredLiters:0.0},");
+            sb.Append($"\"mainLeakActive\":{(MainLeakActive ? "true" : "false")},");
+            sb.Append($"\"lowFlow\":{(LowFlowInstalledAll ? "true" : "false")},");
+            sb.Append($"\"ledInstalled\":{(LedInstalledAll ? "true" : "false")},");
+            sb.Append($"\"backupActive\":{(BackupActive ? "true" : "false")},");
+            sb.Append($"\"backupFuel\":{BackupFuelReserveKWh:0.0},");
+            sb.Append($"\"segregation\":{SegregationQuality:0.00},");
+            sb.Append($"\"recycledWaste\":{RecycledWasteKg:0.0},");
+            sb.Append($"\"landfillWaste\":{LandfillWasteKg:0.0},");
+            sb.Append($"\"labsRescheduled\":{(LabsRescheduled ? "true" : "false")},");
+            sb.Append($"\"extraCounter\":{(ExtraCounterActive ? "true" : "false")}");
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public void LoadFromJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return;
+            try
+            {
+                Minute = ExtractInt(json, "\"minute\":");
+                BudgetINR = ExtractInt(json, "\"budget\":");
+                StaffAllocated = ExtractInt(json, "\"staffAllocated\":");
+                Satisfaction = ExtractInt(json, "\"satisfaction\":");
+                Sustainability = ExtractInt(json, "\"sustainability\":");
+                WaterStoredLiters = ExtractFloat(json, "\"waterStored\":");
+                MainLeakActive = ExtractBool(json, "\"mainLeakActive\":");
+                LowFlowInstalledAll = ExtractBool(json, "\"lowFlow\":");
+                LedInstalledAll = ExtractBool(json, "\"ledInstalled\":");
+                BackupActive = ExtractBool(json, "\"backupActive\":");
+                BackupFuelReserveKWh = ExtractFloat(json, "\"backupFuel\":");
+                SegregationQuality = ExtractFloat(json, "\"segregation\":");
+                RecycledWasteKg = ExtractFloat(json, "\"recycledWaste\":");
+                LandfillWasteKg = ExtractFloat(json, "\"landfillWaste\":");
+                LabsRescheduled = ExtractBool(json, "\"labsRescheduled\":");
+                ExtraCounterActive = ExtractBool(json, "\"extraCounter\":");
+            }
+            catch { }
+        }
+
+        static int ExtractInt(string json, string key)
+        {
+            int idx = json.IndexOf(key, StringComparison.Ordinal);
+            if (idx < 0) return 0;
+            int start = idx + key.Length;
+            int end = start;
+            while (end < json.Length && (char.IsDigit(json[end]) || json[end] == '-')) end++;
+            return int.TryParse(json.Substring(start, end - start), out int val) ? val : 0;
+        }
+
+        static float ExtractFloat(string json, string key)
+        {
+            int idx = json.IndexOf(key, StringComparison.Ordinal);
+            if (idx < 0) return 0f;
+            int start = idx + key.Length;
+            int end = start;
+            while (end < json.Length && (char.IsDigit(json[end]) || json[end] == '.' || json[end] == '-')) end++;
+            return float.TryParse(json.Substring(start, end - start), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float val) ? val : 0f;
+        }
+
+        static bool ExtractBool(string json, string key)
+        {
+            int idx = json.IndexOf(key, StringComparison.Ordinal);
+            if (idx < 0) return false;
+            return json.Substring(idx + key.Length, Math.Min(5, json.Length - (idx + key.Length))).StartsWith("true", StringComparison.Ordinal);
         }
     }
 }

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="17" result="Passed" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 07:04:57Z" end-time="2026-10-13 07:04:58Z" duration="0.4698558">
+  <test-suite type="TestSuite" id="1000" name="Campus Pulse 2030" fullname="Campus Pulse 2030" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-13 07:04:57Z" end-time="2026-10-13 07:04:58Z" duration="0.469856" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1020" name="Campus.EditTests.dll" fullname="C:/GameDev/CampusPulse2030/Library/ScriptAssemblies/Campus.EditTests.dll" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-13 07:04:57Z" end-time="2026-10-13 07:04:58Z" duration="0.358046" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="1936" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1002" name="StateTests" fullname="StateTests" classname="StateTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.254738" total="17" passed="17" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1012" name="ActionIdempotencyPreventsDuplicateOrders" fullname="StateTests.ActionIdempotencyPreventsDuplicateOrders" methodname="ActionIdempotencyPreventsDuplicateOrders" classname="StateTests" runstate="Runnable" seed="413551780" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.034579" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1011" name="BudgetDeductionAndStaffLifecycle" fullname="StateTests.BudgetDeductionAndStaffLifecycle" methodname="BudgetDeductionAndStaffLifecycle" classname="StateTests" runstate="Runnable" seed="1921547119" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.009239" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1017" name="CampaignMultiCriteriaEndings" fullname="StateTests.CampaignMultiCriteriaEndings" methodname="CampaignMultiCriteriaEndings" classname="StateTests" runstate="Runnable" seed="424516879" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.027959" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1018" name="CampaignSaveAndLoadExactRestoration" fullname="StateTests.CampaignSaveAndLoadExactRestoration" methodname="CampaignSaveAndLoadExactRestoration" classname="StateTests" runstate="Runnable" seed="777760535" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.006815" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1019" name="CampusAdvisorDiagnosticAndBisStandards" fullname="StateTests.CampusAdvisorDiagnosticAndBisStandards" methodname="CampusAdvisorDiagnosticAndBisStandards" classname="StateTests" runstate="Runnable" seed="501752689" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.003583" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1014" name="Chapter1ObjectivesAndCompletion" fullname="StateTests.Chapter1ObjectivesAndCompletion" methodname="Chapter1ObjectivesAndCompletion" classname="StateTests" runstate="Runnable" seed="1528015390" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.014586" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1015" name="Chapter2SymposiumIncidentAndGridBalancing" fullname="StateTests.Chapter2SymposiumIncidentAndGridBalancing" methodname="Chapter2SymposiumIncidentAndGridBalancing" classname="StateTests" runstate="Runnable" seed="1753110179" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.001412" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1016" name="Chapter3CascadingCrisisAndRecovery" fullname="StateTests.Chapter3CascadingCrisisAndRecovery" methodname="Chapter3CascadingCrisisAndRecovery" classname="StateTests" runstate="Runnable" seed="554398526" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.000925" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1006" name="CrowdVisualsAreCappedWithoutChangingPopulation" fullname="StateTests.CrowdVisualsAreCappedWithoutChangingPopulation" methodname="CrowdVisualsAreCappedWithoutChangingPopulation" classname="StateTests" runstate="Runnable" seed="205807770" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.000689" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1005" name="DuplicateIdsRejected" fullname="StateTests.DuplicateIdsRejected" methodname="DuplicateIdsRejected" classname="StateTests" runstate="Runnable" seed="1086446207" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.002710" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1013" name="FutureLensSnapshotAndDeterministicReplay" fullname="StateTests.FutureLensSnapshotAndDeterministicReplay" methodname="FutureLensSnapshotAndDeterministicReplay" classname="StateTests" runstate="Runnable" seed="666611339" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.013658" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1003" name="PausedClockDoesNotAdvance" fullname="StateTests.PausedClockDoesNotAdvance" methodname="PausedClockDoesNotAdvance" classname="StateTests" runstate="Runnable" seed="2008883385" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.000499" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1009" name="PopulationConservationAcrossZones" fullname="StateTests.PopulationConservationAcrossZones" methodname="PopulationConservationAcrossZones" classname="StateTests" runstate="Runnable" seed="680590487" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.003971" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1010" name="PowerAndEnergyCalculations" fullname="StateTests.PowerAndEnergyCalculations" methodname="PowerAndEnergyCalculations" classname="StateTests" runstate="Runnable" seed="2121787039" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.001513" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1004" name="RepeatedClockInputsProduceSameState" fullname="StateTests.RepeatedClockInputsProduceSameState" methodname="RepeatedClockInputsProduceSameState" classname="StateTests" runstate="Runnable" seed="726084588" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.000600" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1008" name="WasteBalanceAndMassConservation" fullname="StateTests.WasteBalanceAndMassConservation" methodname="WasteBalanceAndMassConservation" classname="StateTests" runstate="Runnable" seed="1506228325" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.000832" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1007" name="WaterMassBalanceAndLeakRepair" fullname="StateTests.WaterMassBalanceAndLeakRepair" methodname="WaterMassBalanceAndLeakRepair" classname="StateTests" runstate="Runnable" seed="914718318" result="Passed" start-time="2026-10-13 07:04:58Z" end-time="2026-10-13 07:04:58Z" duration="0.000877" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: Logs/Campus/EditMode-results.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

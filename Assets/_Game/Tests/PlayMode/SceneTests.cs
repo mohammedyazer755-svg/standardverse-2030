@@ -96,4 +96,34 @@ public sealed class SceneTests
         yield return null;
         LogAssert.NoUnexpectedReceived();
     }
+
+    [UnityTest] public IEnumerator CampaignProgressionAdvisorAndSaveLoad()
+    {
+        yield return SceneManager.LoadSceneAsync("Campus"); yield return null;
+        var session = Object.FindFirstObjectByType<CampusSession>();
+        Assert.NotNull(session);
+        session.Begin();
+
+        Assert.NotNull(session.Campaign);
+        Assert.NotNull(session.Advisor);
+        Assert.AreEqual(CampusPulse.Simulation.CampaignChapter.Chapter1_NormalDay, session.Campaign.CurrentChapter);
+
+        // Advance chapter to Chapter 2
+        session.PlayChapter(CampusPulse.Simulation.CampaignChapter.Chapter2_PressureBuilds);
+        Assert.AreEqual(CampusPulse.Simulation.CampaignChapter.Chapter2_PressureBuilds, session.Campaign.CurrentChapter);
+
+        // Advisor test
+        var advice = session.Advisor.Evaluate(session.State, session.Campaign);
+        Assert.NotNull(advice);
+        Assert.NotNull(advice.Headline);
+
+        // Save & Load
+        session.SaveGame();
+        Assert.IsTrue(System.IO.File.Exists(session.GetSavePath()));
+        bool loaded = session.LoadGame();
+        Assert.IsTrue(loaded);
+
+        yield return null;
+        LogAssert.NoUnexpectedReceived();
+    }
 }

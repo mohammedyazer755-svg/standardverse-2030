@@ -17,6 +17,8 @@ namespace CampusPulse
         public SessionMode Mode { get; private set; } = SessionMode.Menu;
         public FacilityView Selected { get; private set; }
         public FacilityView Hovered { get; private set; }
+        public CampusCampaign Campaign { get; private set; }
+        public CampusAdvisor Advisor { get; private set; }
         public event Action<FacilityView> SelectionChanged;
         float clock;
         void Awake()
@@ -27,7 +29,10 @@ namespace CampusPulse
         }
         public void ResetState()
         {
+            Campaign = new CampusCampaign();
+            Advisor = new CampusAdvisor();
             State = new CampusState();
+            State.Campaign = Campaign;
             foreach (var facility in Facilities) State.Add(facility.CreateState());
             clock = 0;
             Select(null);
@@ -41,6 +46,51 @@ namespace CampusPulse
             State.Paused = Mode != SessionMode.Playing;
         }
         public void Restart() { Mode = SessionMode.Playing; ResetState(); Rig.ResetView(); }
+        public void PlayChapter(CampaignChapter ch)
+        {
+            ResetState();
+            Campaign.InitChapter(ch);
+            Mode = SessionMode.Playing;
+            State.Paused = false;
+        }
+        public void AdvanceChapter()
+        {
+            Campaign.AdvanceToNextChapter(State);
+        }
+        public string GetSavePath() => System.IO.Path.Combine(Application.persistentDataPath, "campus-save.json");
+        public void SaveGame()
+        {
+            try
+            {
+                var json = "{\"state\":" + State.ToJson() + ",\"campaign\":" + Campaign.ToJson() + "}";
+                System.IO.File.WriteAllText(GetSavePath(), json);
+                Hud?.TriggerFeedback("✔ GAME SAVED: Progress preserved to disk.");
+            }
+            catch (Exception ex) { Debug.LogWarning("Save failed: " + ex.Message); }
+        }
+        public bool LoadGame()
+        {
+            try
+            {
+                var path = GetSavePath();
+                if (!System.IO.File.Exists(path)) { Hud?.TriggerFeedback("❌ No save file found."); return false; }
+                var json = System.IO.File.ReadAllText(path);
+                int sIdx = json.IndexOf("\"state\":", StringComparison.Ordinal);
+                int cIdx = json.IndexOf("\"campaign\":", StringComparison.Ordinal);
+                if (sIdx >= 0 && cIdx >= 0)
+                {
+                    ResetState();
+                    string stateJson = json.Substring(sIdx + 8, cIdx - (sIdx + 8) - 1);
+                    string campJson = json.Substring(cIdx + 11).TrimEnd('}');
+                    State.LoadFromJson(stateJson);
+                    Campaign.LoadFromJson(campJson);
+                    Hud?.TriggerFeedback("✔ GAME LOADED: State restored successfully.");
+                    return true;
+                }
+            }
+            catch (Exception ex) { Debug.LogWarning("Load failed: " + ex.Message); }
+            return false;
+        }
         public void Select(FacilityView facility)
         {
             Selected = facility;
