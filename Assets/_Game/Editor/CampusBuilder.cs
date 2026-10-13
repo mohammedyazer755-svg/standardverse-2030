@@ -46,14 +46,15 @@ namespace CampusPulse.Editor
             materials.Clear();
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(.61f,.72f,.82f);
-            RenderSettings.ambientEquatorColor = new Color(.45f,.5f,.48f);
-            RenderSettings.ambientGroundColor = new Color(.24f,.28f,.25f);
-            RenderSettings.fog = true; RenderSettings.fogMode = FogMode.ExponentialSquared;
-            RenderSettings.fogColor = new Color(.69f,.79f,.85f); RenderSettings.fogDensity = .0014f;
-            var sun = new GameObject("Late morning sun").AddComponent<Light>(); sun.type = LightType.Directional;
-            sun.transform.rotation = Quaternion.Euler(48,-35,0); sun.color = new Color(1,.93f,.8f);
-            sun.intensity = 2.1f; sun.shadows = LightShadows.Soft; RenderSettings.sun = sun;
+            RenderSettings.ambientSkyColor = new Color(.52f, .66f, .82f);
+            RenderSettings.ambientEquatorColor = new Color(.74f, .62f, .50f);
+            RenderSettings.ambientGroundColor = new Color(.26f, .22f, .18f);
+            RenderSettings.fog = true; RenderSettings.fogMode = FogMode.Linear;
+            RenderSettings.fogColor = new Color(.78f, .74f, .68f);
+            RenderSettings.fogStartDistance = 120f; RenderSettings.fogEndDistance = 460f;
+            var sun = new GameObject("RDR2 Golden hour sun").AddComponent<Light>(); sun.type = LightType.Directional;
+            sun.transform.rotation = Quaternion.Euler(34, -46, 0); sun.color = new Color(1f, .89f, .72f);
+            sun.intensity = 2.45f; sun.shadows = LightShadows.Soft; RenderSettings.sun = sun;
             var volume = new GameObject("Campus atmosphere").AddComponent<Volume>(); volume.isGlobal = true;
             var profilePath = "Assets/_Game/Art/CampusVolume.asset";
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(profilePath);
@@ -61,8 +62,10 @@ namespace CampusPulse.Editor
             {
                 profile = ScriptableObject.CreateInstance<VolumeProfile>(); AssetDatabase.CreateAsset(profile, profilePath);
                 var tone = profile.Add<Tonemapping>(true); tone.mode.Override(TonemappingMode.ACES); AssetDatabase.AddObjectToAsset(tone, profile);
-                var bloom = profile.Add<Bloom>(true); bloom.intensity.Override(.16f); bloom.threshold.Override(1.3f); AssetDatabase.AddObjectToAsset(bloom, profile);
-                var adjust = profile.Add<ColorAdjustments>(true); adjust.postExposure.Override(.25f); adjust.contrast.Override(8); adjust.saturation.Override(-5); AssetDatabase.AddObjectToAsset(adjust, profile);
+                var bloom = profile.Add<Bloom>(true); bloom.intensity.Override(.35f); bloom.threshold.Override(1.08f); AssetDatabase.AddObjectToAsset(bloom, profile);
+                var adjust = profile.Add<ColorAdjustments>(true); adjust.postExposure.Override(.18f); adjust.contrast.Override(18f); adjust.saturation.Override(4f);
+                adjust.colorFilter.Override(new Color(1f, .97f, .93f)); AssetDatabase.AddObjectToAsset(adjust, profile);
+                var vig = profile.Add<Vignette>(true); vig.intensity.Override(.22f); vig.smoothness.Override(.4f); AssetDatabase.AddObjectToAsset(vig, profile);
             }
             volume.sharedProfile = profile;
         }

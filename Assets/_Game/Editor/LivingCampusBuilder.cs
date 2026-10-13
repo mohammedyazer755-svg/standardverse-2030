@@ -111,6 +111,12 @@ namespace CampusPulse.Editor
             CombineStatic(visual,id);
             f.ActivityIndicator=LocalBox(root.transform,"Service status glow",new Vector3(0,4.45f,-depth*.5f-1),new Vector3(2,.18f,.15f),aqua).GetComponent<Renderer>();
             float boundDepth=depth+(wings?12:0); float centerZ=wings?-6:0;
+            var pin=new GameObject("Digital Twin Pin").transform; pin.SetParent(root.transform,false);
+            pin.localPosition=new Vector3(0,height+3.2f,centerZ);
+            var pinGlow=Shape(PrimitiveType.Cylinder,"Pin Glow",pin,Vector3.zero,new Vector3(1.3f,.15f,1.3f),aqua);
+            pinGlow.transform.localRotation=Quaternion.Euler(90,0,0);
+            f.StatusPinGlow=pinGlow.GetComponent<Renderer>();
+            Sign(pin,name.ToUpperInvariant(),new Vector3(0,1.2f,0),.16f,Color.white);
             var collider=root.AddComponent<BoxCollider>(); collider.center=new Vector3(0,height*.5f,centerZ); collider.size=new Vector3(width,height,boundDepth);
             f.FocusOffset=new Vector3(0,2,centerZ); f.FocusDistance=Mathf.Max(65,width*2.3f);
             var marker=new GameObject("Selection footprint").transform; marker.SetParent(root.transform,false);
@@ -177,6 +183,17 @@ namespace CampusPulse.Editor
                 var p=new Vector3(f.transform.position.x+i*7,0,front);
                 Box("Planter",p+Vector3.up*.45f,new Vector3(6,.6f,3),trim,root);
                 Box("Planted bed",p+Vector3.up*.8f,new Vector3(5.7f,.3f,2.7f),leaves,root);
+            }
+            // Segregated recycling stations at entrance
+            for(int b=-1;b<=1;b++)
+            {
+                var binColor=b<0?new Color(.12f,.45f,.72f):b==0?new Color(.14f,.55f,.25f):new Color(.85f,.65f,.12f);
+                LocalBox(root,"Recycling bin "+b,new Vector3(b*.65f+7f,.42f,-d/2-extra-3.5f),new Vector3(.4f,.84f,.4f),Material("CampusSortBin "+b,binColor));
+            }
+            if(academic||f.Id=="library")
+            {
+                for(int k=0;k<4;k++)
+                    LocalBox(root,"Bike rack "+k,new Vector3(-9f+k*1.1f,.38f,-d/2-extra-3.5f),new Vector3(.08f,.75f,1.1f),metal);
             }
             CombineStatic(root,f.Id+"-landscape");
         }
@@ -385,6 +402,12 @@ namespace CampusPulse.Editor
             var root=new GameObject(name); root.transform.position=p;
             var f=root.AddComponent<FacilityView>(); f.Id=id; f.DisplayName=name; f.Purpose=purpose; f.Capacity=40; f.InitialOccupants=5; f.Water=1; f.Power=3; f.Waste=2; f.FocusDistance=70;
             var c=root.AddComponent<BoxCollider>(); c.center=new Vector3(0,3,0); c.size=new Vector3(w,6,d);
+            var pin=new GameObject("Digital Twin Pin").transform; pin.SetParent(root.transform,false);
+            pin.localPosition=new Vector3(0,7.2f,0);
+            var pinGlow=Shape(PrimitiveType.Cylinder,"Pin Glow",pin,Vector3.zero,new Vector3(1.3f,.15f,1.3f),aqua);
+            pinGlow.transform.localRotation=Quaternion.Euler(90,0,0);
+            f.StatusPinGlow=pinGlow.GetComponent<Renderer>();
+            Sign(pin,name.ToUpperInvariant(),new Vector3(0,1.2f,0),.16f,Color.white);
             if(id!="garden") LocalBox(root.transform,"Service apron",new Vector3(0,.08f,0),new Vector3(w+3,.16f,d+3),paving);
             var marker=new GameObject("Selection").transform; marker.SetParent(root.transform,false);
             LocalBox(marker,"Front",new Vector3(0,.27f,-d/2),new Vector3(w,.08f,.18f),aqua);
@@ -430,26 +453,40 @@ namespace CampusPulse.Editor
                 float x=-18+i*3.3f;
                 LocalBox(parking.transform,"Bay line",new Vector3(x,.27f,5),new Vector3(.1f,.03f,8),white);
                 if(i%3==0) continue;
-                Car(parking.transform,new Vector3(x+1.5f,.2f,5),0,carPaints[i%carPaints.Length]);
+                Car(parking.transform,new Vector3(x+1.5f,.2f,5),0,carPaints[i%carPaints.Length],i%2==1);
             }
         }
-        static void Car(Transform parent,Vector3 p,float yaw,Material paint)
+        static void Car(Transform parent,Vector3 p,float yaw,Material paint,bool isSuv=false)
         {
-            var car=new GameObject("Parked car").transform; car.SetParent(parent,false);
+            var car=new GameObject(isSuv?"Parked SUV":"Parked Sedan").transform; car.SetParent(parent,false);
             car.localPosition=p; car.localRotation=Quaternion.Euler(0,yaw,0);
+            float cabinH=isSuv?.7f:.55f;
+            float cabinY=isSuv?.98f:.88f;
+            float roofZ=isSuv?2.4f:2.1f;
             // Lower chassis & aerodynamic hood
             LocalBox(car,"Chassis",new Vector3(0,.35f,0),new Vector3(1.75f,.35f,3.9f),paint);
             LocalBox(car,"Hood slope",new Vector3(0,.42f,1.35f),new Vector3(1.68f,.25f,1.1f),paint);
             // Cabin superstructure
-            LocalBox(car,"Cabin",new Vector3(0,.88f,-.25f),new Vector3(1.48f,.55f,2.1f),paint);
+            LocalBox(car,"Cabin",new Vector3(0,cabinY,-.25f),new Vector3(1.48f,cabinH,roofZ),paint);
             // Windshield, rear window, side glass
-            LocalBox(car,"Windshield",new Vector3(0,.88f,.85f),new Vector3(1.38f,.46f,.12f),glass);
-            LocalBox(car,"Rear glass",new Vector3(0,.88f,-1.32f),new Vector3(1.36f,.44f,.12f),glass);
-            LocalBox(car,"Side glass",new Vector3(0,.88f,-.25f),new Vector3(1.52f,.42f,1.7f),glass);
+            LocalBox(car,"Windshield",new Vector3(0,cabinY,.85f),new Vector3(1.38f,cabinH*.82f,.12f),glass);
+            LocalBox(car,"Rear glass",new Vector3(0,cabinY,-1.32f),new Vector3(1.36f,cabinH*.78f,.12f),glass);
+            LocalBox(car,"Side glass",new Vector3(0,cabinY,-.25f),new Vector3(1.52f,cabinH*.75f,1.7f),glass);
             // Bumpers & grille
             LocalBox(car,"Front bumper",new Vector3(0,.25f,1.98f),new Vector3(1.72f,.24f,.18f),metal);
             LocalBox(car,"Rear bumper",new Vector3(0,.25f,-1.98f),new Vector3(1.72f,.24f,.18f),metal);
             LocalBox(car,"Grille",new Vector3(0,.38f,1.98f),new Vector3(1.1f,.18f,.06f),metal);
+            // Side view mirrors
+            LocalBox(car,"Mirror L",new Vector3(-.94f,.75f,.75f),new Vector3(.18f,.12f,.15f),paint);
+            LocalBox(car,"Mirror R",new Vector3(.94f,.75f,.75f),new Vector3(.18f,.12f,.15f),paint);
+            // License plates
+            LocalBox(car,"Plate F",new Vector3(0,.2f,2.08f),new Vector3(.55f,.14f,.03f),white);
+            LocalBox(car,"Plate R",new Vector3(0,.2f,-2.08f),new Vector3(.55f,.14f,.03f),white);
+            if(isSuv)
+            {
+                LocalBox(car,"Roof rail L",new Vector3(-.6f,1.38f,-.25f),new Vector3(.05f,.06f,2.1f),metal);
+                LocalBox(car,"Roof rail R",new Vector3(.6f,1.38f,-.25f),new Vector3(.05f,.06f,2.1f),metal);
+            }
             // Headlights (warm white glow) & taillights (red emissive)
             var lampGlow=Material("Headlight glow",new Color(1f,.96f,.85f));
             LocalBox(car,"Headlight L",new Vector3(-.62f,.38f,1.99f),new Vector3(.3f,.15f,.06f),lampGlow);

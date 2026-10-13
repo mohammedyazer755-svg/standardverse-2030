@@ -27,7 +27,7 @@ Scope: Mandatory CODE2PLAY "Save the Campus" gameplay requirements implemented a
 | `Invoke-CampusEditor.ps1 -Command edit-tests` | 11 passed, 0 failed (water balance, leak repair, pump power dependency, waste conservation, population invariance, solar integration, budget/staff lifecycle, idempotency, Future Lens snapshot determinism) | `docs/evidence/Phase2/EditMode-results.xml` |
 | `Invoke-CampusEditor.ps1 -Command play-tests` | 4 passed, 0 failed (foundation interaction/pause, living campus walkers, 13 facilities, playable resource interventions & state sync) | `docs/evidence/Phase2/PlayMode-results.xml` |
 | `Invoke-CampusEditor.ps1 -Command build` | Build succeeded (0 errors, 0 warnings); standalone executable created | `builds/Windows/CampusPulse2030.exe` |
-| Standalone Smoke: `CampusPulse2030.exe --campus-smoke` | 13/13 facility ray-picks passed, UI block passed, pause passed, screenshots captured, 12s uncapped benchmark passed (median 5.37 ms, p95 9.23 ms on RTX 4060 Laptop / i7-13650HX) | `docs/evidence/Phase2/runtime-report.json`, `overview.png`, `academic-block.png` |
+| Standalone Smoke: `CampusPulse2030.exe --campus-smoke` | 13/13 facility ray-picks passed, UI block passed, pause passed, screenshots captured, 12s uncapped benchmark passed (median 2.94 ms, p95 4.24 ms, 3,927 frames on RTX 4060 Laptop / i7-13650HX at 1920x1080) | `docs/evidence/Phase2/runtime-report.json`, `overview.png`, `academic-block.png` |
 
 ## Failed or incomplete
 

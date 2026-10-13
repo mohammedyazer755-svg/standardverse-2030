@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 02:52:37Z" end-time="2026-10-13 02:52:42Z" duration="4.8503618">
-  <test-suite type="TestSuite" id="1010" name="Campus Pulse 2030" fullname="Campus Pulse 2030" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 02:52:37Z" end-time="2026-10-13 02:52:42Z" duration="4.850362" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-13 03:05:58Z" end-time="2026-10-13 03:06:03Z" duration="5.0843641">
+  <test-suite type="TestSuite" id="1010" name="Campus Pulse 2030" fullname="Campus Pulse 2030" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 03:05:58Z" end-time="2026-10-13 03:06:03Z" duration="5.084364" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <test-suite type="Assembly" id="1006" name="Campus.PlayTests.dll" fullname="C:/GameDev/CampusPulse2030/Library/ScriptAssemblies/Campus.PlayTests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 02:52:37Z" end-time="2026-10-13 02:52:42Z" duration="4.839961" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1006" name="Campus.PlayTests.dll" fullname="C:/GameDev/CampusPulse2030/Library/ScriptAssemblies/Campus.PlayTests.dll" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 03:05:58Z" end-time="2026-10-13 03:06:03Z" duration="5.073202" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
         <property name="_PID" value="4816" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <test-suite type="TestFixture" id="1001" name="SceneTests" fullname="SceneTests" classname="SceneTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 02:52:37Z" end-time="2026-10-13 02:52:42Z" duration="4.836459" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestFixture" id="1001" name="SceneTests" fullname="SceneTests" classname="SceneTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-13 03:05:58Z" end-time="2026-10-13 03:06:03Z" duration="5.069866" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-case id="1002" name="FoundationInteractionAndPause" fullname="SceneTests.FoundationInteractionAndPause" methodname="FoundationInteractionAndPause" classname="SceneTests" runstate="Runnable" seed="1810549995" result="Passed" start-time="2026-10-13 02:52:37Z" end-time="2026-10-13 02:52:40Z" duration="2.941972" asserts="0">
+        <test-case id="1002" name="FoundationInteractionAndPause" fullname="SceneTests.FoundationInteractionAndPause" methodname="FoundationInteractionAndPause" classname="SceneTests" runstate="Runnable" seed="197804779" result="Passed" start-time="2026-10-13 03:05:58Z" end-time="2026-10-13 03:06:01Z" duration="2.844453" asserts="0">
           <properties>
             <property name="_JOINTYPE" value="UnityCombinatorial" />
             <property name="retryIteration" value="0" />
             <property name="repeatIteration" value="0" />
           </properties>
         </test-case>
-        <test-case id="1004" name="FullCampusHasEveryRequiredFacility" fullname="SceneTests.FullCampusHasEveryRequiredFacility" methodname="FullCampusHasEveryRequiredFacility" classname="SceneTests" runstate="Runnable" seed="439539352" result="Passed" start-time="2026-10-13 02:52:40Z" end-time="2026-10-13 02:52:41Z" duration="0.446803" asserts="0">
+        <test-case id="1004" name="FullCampusHasEveryRequiredFacility" fullname="SceneTests.FullCampusHasEveryRequiredFacility" methodname="FullCampusHasEveryRequiredFacility" classname="SceneTests" runstate="Runnable" seed="2097783465" result="Passed" start-time="2026-10-13 03:06:01Z" end-time="2026-10-13 03:06:02Z" duration="0.793256" asserts="0">
           <properties>
             <property name="_JOINTYPE" value="UnityCombinatorial" />
             <property name="retryIteration" value="0" />
             <property name="repeatIteration" value="0" />
           </properties>
         </test-case>
-        <test-case id="1003" name="LivingCampusPresentationFollowsState" fullname="SceneTests.LivingCampusPresentationFollowsState" methodname="LivingCampusPresentationFollowsState" classname="SceneTests" runstate="Runnable" seed="2038497041" result="Passed" start-time="2026-10-13 02:52:41Z" end-time="2026-10-13 02:52:42Z" duration="0.985702" asserts="0">
+        <test-case id="1003" name="LivingCampusPresentationFollowsState" fullname="SceneTests.LivingCampusPresentationFollowsState" methodname="LivingCampusPresentationFollowsState" classname="SceneTests" runstate="Runnable" seed="853008265" result="Passed" start-time="2026-10-13 03:06:02Z" end-time="2026-10-13 03:06:03Z" duration="0.979427" asserts="0">
           <properties>
             <property name="_JOINTYPE" value="UnityCombinatorial" />
             <property name="retryIteration" value="0" />
             <property name="repeatIteration" value="0" />
           </properties>
         </test-case>
-        <test-case id="1005" name="PlayableResourceInterventionsAndStateSync" fullname="SceneTests.PlayableResourceInterventionsAndStateSync" methodname="PlayableResourceInterventionsAndStateSync" classname="SceneTests" runstate="Runnable" seed="1583664270" result="Passed" start-time="2026-10-13 02:52:42Z" end-time="2026-10-13 02:52:42Z" duration="0.448412" asserts="0">
+        <test-case id="1005" name="PlayableResourceInterventionsAndStateSync" fullname="SceneTests.PlayableResourceInterventionsAndStateSync" methodname="PlayableResourceInterventionsAndStateSync" classname="SceneTests" runstate="Runnable" seed="882225790" result="Passed" start-time="2026-10-13 03:06:03Z" end-time="2026-10-13 03:06:03Z" duration="0.432588" asserts="0">
           <properties>
             <property name="_JOINTYPE" value="UnityCombinatorial" />
             <property name="retryIteration" value="0" />

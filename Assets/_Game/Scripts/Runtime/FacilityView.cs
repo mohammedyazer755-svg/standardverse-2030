@@ -16,6 +16,7 @@ namespace CampusPulse
         public Renderer Highlight;
         public Renderer ActivityIndicator;
         public Renderer LeakIndicator;
+        public Renderer StatusPinGlow;
         public Transform WaterSurface;
         public FacilityState CreateState() => new FacilityState(Id, DisplayName, Purpose, Capacity, InitialOccupants, Water, Power, Waste);
         MaterialPropertyBlock properties;
@@ -49,6 +50,23 @@ namespace CampusPulse
             if (LeakIndicator)
             {
                 LeakIndicator.gameObject.SetActive(state.MainLeakActive);
+            }
+            if (StatusPinGlow)
+            {
+                properties ??= new MaterialPropertyBlock();
+                Color pinColor = new Color(.12f, .88f, .72f);
+                if (Id == "water" && state.MainLeakActive)
+                    pinColor = new Color(.95f, .22f, .15f);
+                else if (state.PowerDeficitKW > 5f)
+                    pinColor = new Color(.95f, .22f, .15f);
+                else if (state.Facilities.TryGetValue(Id, out var fac) && fac.BinOverflowKg > 2f)
+                    pinColor = new Color(1f, .72f, .15f);
+                else if (Id == "canteen" && fac != null && fac.QueueCount > 25)
+                    pinColor = new Color(1f, .72f, .15f);
+
+                properties.SetColor("_BaseColor", pinColor);
+                properties.SetColor("_EmissionColor", pinColor * 2.2f);
+                StatusPinGlow.SetPropertyBlock(properties);
             }
         }
     }

@@ -19,13 +19,14 @@ Status: COMPLETE — Phase 2 verified and passed all gates. Ready for Phase 3.
     - Early Future Lens: `SimulationSnapshot` immutable clone + 10 deterministic ticks verified leaving live state untouched.
   - Visual Upgrades & Digital Twin HUD:
     - Elevated industrial water towers: 4-leg concrete piers, steel stanchions, X-braces, elevated catwalk with handrails at 5.8m, corrugated tank body, conical cap, caged ladder, riser pipe with red shutoff handwheel, and ground leak puddle.
-    - Modeled vehicles in parking: chassis, sloped hoods, roofs, windshields, side glass, bumpers, headlights, taillights, rubber tires, and silver rims in 6 automotive paints.
-    - Digital Twin operations HUD: top command bar, discipline filters (Water, Power, Waste, Crowds), active sensor alerts, and interactive intervention drawer with single-click execution.
+    - Modeled vehicles in parking: chassis, sloped hoods, roofs, windshields, side glass, bumpers, headlights, taillights, side mirrors, license plates, rubber tires, silver rims, SUV roof rails, in 6 automotive paints.
+    - Digital Twin operations HUD & World-Space Status Pins: top command bar, discipline filters (Water, Power, Waste, Crowds), active sensor alerts, interactive intervention drawer, entrance segregated recycling stations (paper, compost, plastics), bike racks, and dynamic world-space Digital Twin glowing pins above facilities reflecting live stress states.
+    - Grounded RDR2-level environment lighting: warm golden-hour directional sun (34°, -46°), ACES tonemapping, subtle filmic bloom/contrast/vignette, and depth linear atmospheric haze.
   - Testing & Verification:
     - 11 EditMode tests pass (0 failures).
     - 4 PlayMode tests pass (0 failures).
-    - Windows standalone build passes with 0 errors/0 warnings.
-    - Standalone smoke test passes: 13/13 facility ray-picks, UI-blocks, pause/restart, screenshots captured, 12-second uncapped benchmark: median 5.37 ms (~186 FPS), p95 9.23 ms on RTX 4060 Laptop / i7-13650HX at 1920x1080. Evidence in `docs/evidence/Phase2/`.
+    - Windows standalone build passes with 0 errors/0 warnings (`builds/Windows/CampusPulse2030.exe`).
+    - Standalone smoke test passes: 13/13 facility ray-picks, UI-blocks, pause/restart, screenshots captured, 12-second uncapped benchmark: median 2.94 ms (~340 FPS), p95 4.24 ms (~235 FPS), 3,927 frames on RTX 4060 Laptop / i7-13650HX at 1920x1080. Evidence in `docs/evidence/Phase2/`.
 
 ## Implemented but NOT verified / incomplete
 - Phase 3 full 3-day story campaign, scripted surprise incidents, and contextual advisor system are not yet implemented.
